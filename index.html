@@ -4,7 +4,6 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-title" content="销售CRM"/>
   <title>销售CRM系统</title>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -26,9 +25,12 @@
     .btn-primary{background:#1a73e8;color:#fff;}
     .btn-primary:active{background:#1557b0;}
     .btn-gray{background:#f0f0f0;color:#666;margin-top:10px;}
+    .btn-danger{background:#ff4d4f;color:#fff;margin-top:10px;border:none;border-radius:10px;width:100%;padding:14px;font-size:16px;cursor:pointer;display:block;text-align:center;}
+    .btn-outline{background:#f0f7ff;color:#1a73e8;border:1.5px solid #1a73e8;display:block;width:100%;padding:14px;border-radius:10px;font-size:16px;cursor:pointer;text-align:center;margin-bottom:12px;}
     .btn-sm{padding:8px 16px;border:none;border-radius:6px;font-size:13px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
     .btn-edit-sm{background:#e8f0fe;color:#1a73e8;}
     .btn-del-sm{background:#fff0f0;color:#ff4d4f;}
+    .btn-view-sm{background:#e6f4ea;color:#34a853;}
     .form-group{margin-bottom:14px;}
     .form-label{font-size:13px;color:#555;display:block;margin-bottom:6px;}
     .form-input,.form-select,.form-textarea{width:100%;padding:12px;border:1px solid #e8e8e8;border-radius:8px;font-size:15px;background:#fafafa;outline:none;-webkit-appearance:none;}
@@ -59,7 +61,7 @@
     .c-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
     .c-name{font-size:17px;font-weight:bold;color:#222;}
     .c-info{font-size:13px;color:#666;margin-bottom:4px;}
-    .action-row{display:flex;gap:8px;margin-top:12px;}
+    .action-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
     .search-wrap{display:flex;align-items:center;background:#fff;border-radius:10px;padding:10px 14px;margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
     .search-wrap input{border:none;outline:none;font-size:15px;flex:1;background:transparent;}
     .sec-title{font-size:16px;font-weight:bold;color:#333;margin-bottom:12px;padding-left:10px;border-left:4px solid #1a73e8;}
@@ -70,23 +72,20 @@
     .goal-lbl{font-size:12px;color:#888;margin-top:4px;}
     .empty{text-align:center;color:#bbb;padding:30px 0;font-size:14px;}
     .top-tab{display:flex;background:#fff;border-radius:10px;margin-bottom:14px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
-    .top-tab-item{flex:1;text-align:center;padding:12px 0;font-size:14px;color:#666;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+    .top-tab-item{flex:1;text-align:center;padding:12px 0;font-size:14px;color:#666;cursor:pointer;}
     .top-tab-item.active{background:#1a73e8;color:#fff;font-weight:bold;}
     .admin-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
     .admin-title{font-size:18px;font-weight:bold;}
-    .admin-btns{display:flex;gap:8px;}
     .sync-btn{background:#e8f0fe;color:#1a73e8;padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;}
-    .out-btn{background:#fff0f0;color:#ff4d4f;padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;}
     .prow{display:flex;justify-content:space-between;font-size:13px;color:#555;margin-bottom:6px;}
     .ppct{text-align:right;font-size:13px;color:#1a73e8;font-weight:bold;margin-top:4px;}
-    .emp-id{font-size:11px;color:#bbb;margin-bottom:10px;}
     .emp-row{display:flex;justify-content:space-around;text-align:center;}
     .emp-item{display:flex;flex-direction:column;align-items:center;}
     .emp-num{font-size:22px;font-weight:bold;}
     .emp-lbl{font-size:11px;color:#888;margin-top:2px;}
     .green{color:#34a853;}.red{color:#ff4d4f;}.orange{color:#f5a623;}.blue{color:#1a73e8;}
-    .shortcut-grid{display:flex;justify-content:space-around;margin-top:4px;}
-    .shortcut-item{background:#fff;border-radius:12px;padding:16px 12px;text-align:center;width:30%;box-shadow:0 1px 6px rgba(0,0,0,0.06);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+    .shortcut-grid{display:flex;gap:12px;margin-top:4px;}
+    .shortcut-item{background:#fff;border-radius:12px;padding:16px 12px;text-align:center;flex:1;box-shadow:0 1px 6px rgba(0,0,0,0.06);cursor:pointer;}
     .shortcut-icon{font-size:30px;margin-bottom:6px;}
     .shortcut-item span{font-size:13px;color:#333;}
     .welcome-card{background:linear-gradient(135deg,#1a73e8,#0d47a1);color:#fff;border-radius:12px;padding:20px;margin-bottom:12px;}
@@ -97,25 +96,21 @@
     .gcnum{font-size:22px;font-weight:bold;color:#1a73e8;}
     .gclbl{font-size:11px;color:#888;margin-top:2px;}
     .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.75);color:#fff;padding:10px 24px;border-radius:20px;font-size:14px;z-index:9999;pointer-events:none;}
-
-    /* 登录页 */
-    #loginPage{position:fixed;top:0;left:0;width:100%;height:100%;background:#f5f6fa;z-index:999;display:flex;align-items:center;justify-content:center;}
+    #loginPage{position:fixed;top:0;left:0;width:100%;height:100%;background:#f5f6fa;z-index:9999;display:flex;align-items:center;justify-content:center;}
+    #loginPage.hidden{display:none;}
     .login-box{background:#fff;border-radius:20px;padding:40px 30px;width:90%;max-width:400px;box-shadow:0 4px 20px rgba(0,0,0,0.1);text-align:center;}
     .login-logo{font-size:60px;margin-bottom:16px;}
     .login-app-title{font-size:22px;font-weight:bold;color:#222;margin-bottom:6px;}
     .login-sub{font-size:14px;color:#999;margin-bottom:30px;}
     .login-box .form-group{text-align:left;}
     .login-error{color:#ff4d4f;font-size:13px;margin-top:10px;display:none;}
-
-    /* 客户表格 */
-    .table-wrap{overflow-x:auto;margin-bottom:12px;}
-    table{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:12px;overflow:hidden;}
-    th{background:#1a73e8;color:#fff;padding:10px 8px;text-align:left;font-weight:normal;white-space:nowrap;}
-    td{padding:10px 8px;border-bottom:1px solid #f0f0f0;vertical-align:middle;}
-    tr:last-child td{border-bottom:none;}
-    tr:hover td{background:#f8f9ff;}
-
-    /* 消息通知弹窗 */
+    .detail-row{display:flex;padding:10px 0;border-bottom:1px solid #f5f5f5;font-size:14px;}
+    .detail-label{color:#888;width:90px;flex-shrink:0;}
+    .detail-value{color:#222;font-weight:500;flex:1;}
+    .today-stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:4px;}
+    .today-stat-item{background:#f0f7ff;border-radius:10px;padding:14px 8px;text-align:center;}
+    .today-stat-num{font-size:26px;font-weight:bold;color:#1a73e8;}
+    .today-stat-lbl{font-size:11px;color:#888;margin-top:4px;}
     .msg-popup{display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);width:90%;max-width:400px;background:#fff;border-radius:16px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,0.2);z-index:9998;border-left:4px solid #1a73e8;}
     .msg-popup.show{display:block;animation:slideDown 0.3s ease;}
     @keyframes slideDown{from{top:0;opacity:0;}to{top:20px;opacity:1;}}
@@ -123,13 +118,18 @@
     .msg-popup-content{font-size:15px;color:#333;margin-bottom:16px;}
     .msg-popup-time{font-size:12px;color:#999;margin-bottom:12px;}
     .msg-popup-close{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:14px;cursor:pointer;width:100%;}
-
-    /* 消息发送面板 */
     .msg-send-box{background:#f0f7ff;border-radius:12px;padding:16px;margin-bottom:12px;}
     .msg-send-title{font-size:15px;font-weight:bold;color:#1a73e8;margin-bottom:12px;}
     .msg-target{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
     .msg-target-btn{padding:6px 14px;border-radius:20px;border:1px solid #1a73e8;color:#1a73e8;font-size:13px;cursor:pointer;background:#fff;}
     .msg-target-btn.active{background:#1a73e8;color:#fff;}
+    .admin-sub-tab{display:flex;flex-wrap:wrap;background:#fff;border-radius:10px;margin-bottom:14px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
+    .admin-sub-tab-item{flex:1 1 30%;text-align:center;padding:10px 0;font-size:13px;color:#666;cursor:pointer;border:none;background:none;}
+    .admin-sub-tab-item.active{background:#1a73e8;color:#fff;font-weight:bold;}
+    .pwd-section{background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
+    .back-bar{display:flex;align-items:center;margin-bottom:14px;gap:10px;}
+    .back-btn{background:#e8f0fe;color:#1a73e8;border:none;border-radius:8px;padding:8px 16px;font-size:14px;cursor:pointer;}
+    .unread-dot{display:inline-block;width:8px;height:8px;background:#ff4d4f;border-radius:50%;margin-left:4px;vertical-align:middle;}
   </style>
 </head>
 <body>
@@ -153,7 +153,7 @@
   </div>
 </div>
 
-<!-- 消息弹窗 -->
+<!-- 管理员消息弹窗（员工收） -->
 <div class="msg-popup" id="msgPopup">
   <div class="msg-popup-title">📢 管理员消息</div>
   <div class="msg-popup-content" id="msgContent"></div>
@@ -161,40 +161,111 @@
   <button class="msg-popup-close" onclick="closeMsg()">我知道了</button>
 </div>
 
+<!-- 员工消息弹窗（管理员收） -->
+<div class="msg-popup" id="staffMsgPopup" style="border-left-color:#34a853;">
+  <div class="msg-popup-title" style="color:#34a853;">📨 员工上报消息</div>
+  <div class="msg-popup-content" id="staffMsgContent"></div>
+  <div class="msg-popup-time" id="staffMsgTime"></div>
+  <button class="msg-popup-close" style="background:#34a853;" onclick="closeStaffMsg()">我知道了</button>
+</div>
+
+<!-- 客户详情弹窗 -->
+<div class="modal-overlay" id="detailOverlay" onclick="closeDetail()"></div>
+<div class="modal-box" id="detailBox" style="display:none;z-index:210;">
+  <div class="modal-title">客户详细信息</div>
+  <div id="detailContent"></div>
+  <button class="btn btn-gray" onclick="closeDetail()" style="margin-top:16px;">关闭</button>
+</div>
+
+<!-- 添加/编辑客户弹窗 -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeForm()"></div>
+<div class="modal-box" id="modalBox" style="display:none;">
+  <div class="modal-title" id="modalTitle">添加客户</div>
+  <div class="form-group">
+    <label class="form-label">姓名 *</label>
+    <input class="form-input" id="f_name" placeholder="请输入客户姓名"/>
+  </div>
+  <div class="form-group">
+    <label class="form-label">手机号 *（11位）</label>
+    <input class="form-input" id="f_phone" type="tel" maxlength="11" placeholder="请输入11位手机号"/>
+  </div>
+  <div class="form-group">
+    <label class="form-label">公司 *</label>
+    <input class="form-input" id="f_company" placeholder="公司名称（必填）"/>
+  </div>
+  <div class="form-group">
+    <label class="form-label">职位</label>
+    <input class="form-input" id="f_position" placeholder="职位"/>
+  </div>
+  <div class="form-group">
+    <label class="form-label">来源渠道</label>
+    <input class="form-input" id="f_source" placeholder="如：转介绍、电话开发"/>
+  </div>
+  <div class="form-group">
+    <label class="form-label">意向金额（元）</label>
+    <input class="form-input" id="f_amount" type="number" placeholder="预计成交金额"/>
+  </div>
+  <div class="form-group">
+    <label class="form-label">客户状态</label>
+    <select class="form-select" id="f_status">
+      <option value="follow">跟进中</option>
+      <option value="intent">意向客户</option>
+      <option value="deal">已成交</option>
+      <option value="lost">已流失</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="form-label">备注</label>
+    <textarea class="form-textarea" id="f_remark" placeholder="跟进备注..."></textarea>
+  </div>
+  <button class="btn btn-primary" onclick="submitCustomer()">保存</button>
+  <button class="btn btn-gray" onclick="closeForm()">取消</button>
+</div>
+
+<!-- Header -->
 <div class="header">
   <h1>📈 销售CRM系统</h1>
-  <p id="headerSub">加载中...</p>
+  <p id="headerSub">欢迎使用</p>
 </div>
 
 <!-- 首页 -->
 <div class="page active" id="page-home">
   <div class="welcome-card">
-    <div class="welcome-name">你好，<span id="homeUser">员工</span> 👋</div>
+    <div class="welcome-name">你好，<span id="homeUser">--</span> 👋</div>
     <div class="welcome-date" id="homeDate"></div>
   </div>
   <div class="sec-title">今日目标</div>
-  <div class="card" id="homeDailyCard"><div class="empty">暂无今日计划，去"目标"页面设定</div></div>
+  <div class="card" id="homeDailyCard"><div class="empty">暂无今日计划</div></div>
   <div class="sec-title">本月销售进度</div>
   <div class="card" id="homeMonthCard"><div class="empty">暂无月度计划</div></div>
+  <div id="todayStatSection" style="display:none;">
+    <div class="sec-title">今日完成情况</div>
+    <div class="card" id="todayStatCard"><div class="empty">加载中...</div></div>
+  </div>
   <div class="sec-title">快捷操作</div>
   <div class="shortcut-grid">
-    <div class="shortcut-item" onclick="switchTab('customer')"><div class="shortcut-icon">👥</div><span>添加客户</span></div>
+    <div class="shortcut-item" onclick="switchTab('customer')"><div class="shortcut-icon">👥</div><span>客户管理</span></div>
     <div class="shortcut-item" onclick="switchTab('goal')"><div class="shortcut-icon">🎯</div><span>设定目标</span></div>
-    <div class="shortcut-item" onclick="switchTab('admin')"><div class="shortcut-icon">📊</div><span>数据看板</span></div>
   </div>
 </div>
 
-<!-- 客户页 -->
+<!-- 客户操作页 -->
 <div class="page" id="page-customer">
+  <button class="btn btn-primary" onclick="showAddForm()" style="margin-bottom:12px;">+ 添加客户</button>
+  <button class="btn-outline" onclick="goCustomerList()">📋 查看客户列表</button>
+</div>
+
+<!-- 客户列表页 -->
+<div class="page" id="page-customerlist">
+  <div class="back-bar">
+    <button class="back-btn" onclick="backFromList()">← 返回</button>
+    <span style="font-size:17px;font-weight:bold;color:#222;" id="listTitle">我的客户列表</span>
+  </div>
   <div class="search-wrap">
     <span>🔍</span>
     <input type="text" id="searchInput" placeholder="搜索姓名/电话/公司" oninput="searchCustomers()"/>
   </div>
-  <button class="btn btn-primary" onclick="showAddForm()" style="margin-bottom:12px;">+ 添加客户</button>
-  <!-- 客户表格 -->
-  <div class="table-wrap" id="customerTable"></div>
-  <!-- 客户卡片列表 -->
-  <div id="customerList"></div>
+  <div id="customerList"><div class="empty">加载中...</div></div>
 </div>
 
 <!-- 目标页 -->
@@ -219,6 +290,7 @@
         <input class="form-input" type="number" id="d_intent" placeholder="意向客户数"/>
       </div>
       <button class="btn btn-primary" onclick="saveDailyGoal()">保存今日计划</button>
+      <button class="btn btn-danger" id="btnDelDaily" style="display:none;" onclick="deleteDailyGoal()">删除今日计划</button>
     </div>
     <div class="card goal-preview" id="dailyPreview" style="display:none;">
       <div class="sec-title">今日计划一览</div>
@@ -245,6 +317,7 @@
         <input class="form-input" type="number" id="m_left" readonly style="color:#ff4d4f;background:#fff0f0;"/>
       </div>
       <button class="btn btn-primary" onclick="saveMonthlyGoal()">保存月度计划</button>
+      <button class="btn btn-danger" id="btnDelMonthly" style="display:none;" onclick="deleteMonthlyGoal()">删除月度计划</button>
     </div>
     <div class="card" id="monthlyPreview" style="display:none;">
       <div class="sec-title">月度完成进度</div>
@@ -255,115 +328,94 @@
   </div>
 </div>
 
+<!-- 消息页（员工） -->
+<div class="page" id="page-message">
+  <div class="welcome-card">
+    <div class="welcome-name">📨 消息中心</div>
+    <div class="welcome-date">向管理员发送上报消息</div>
+  </div>
+  <div class="sec-title">发送消息给管理员</div>
+  <div class="msg-send-box">
+    <div class="form-group">
+      <label class="form-label">消息内容</label>
+      <textarea class="form-textarea" id="staffMsgInput" placeholder="请输入要上报给管理员的内容..." style="min-height:120px;"></textarea>
+    </div>
+    <button class="btn btn-primary" onclick="staffSendMessage()">📤 发送给管理员</button>
+  </div>
+  <div class="sec-title" style="margin-top:8px;">我的发送记录</div>
+  <div id="staffSentHistory"><div class="empty">加载中...</div></div>
+</div>
+
+<!-- 我的页 -->
+<div class="page" id="page-mine">
+  <div class="welcome-card">
+    <div class="welcome-name">个人中心</div>
+    <div class="welcome-date" id="mineUserInfo"></div>
+  </div>
+  <div class="sec-title">修改密码</div>
+  <div class="pwd-section">
+    <div class="form-group">
+      <label class="form-label">当前密码</label>
+      <input class="form-input" type="password" id="oldPwd" placeholder="请输入当前密码"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">新密码（至少6位）</label>
+      <input class="form-input" type="password" id="newPwd" placeholder="请输入新密码"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">确认新密码</label>
+      <input class="form-input" type="password" id="confirmPwd" placeholder="再次输入新密码"/>
+    </div>
+    <button class="btn btn-primary" onclick="changePwd()">确认修改密码</button>
+  </div>
+  <button class="btn btn-gray" onclick="doLogout()">退出登录</button>
+</div>
+
 <!-- 管理页 -->
 <div class="page" id="page-admin">
-  <div id="adminLogin" class="card" style="text-align:center;padding:40px 20px;">
-    <div style="font-size:60px;margin-bottom:16px;">🔐</div>
-    <div style="font-size:22px;font-weight:bold;margin-bottom:8px;">管理员登录</div>
-    <div style="font-size:14px;color:#999;margin-bottom:30px;">请输入管理员密码进入后台</div>
-    <div class="form-group"><input class="form-input" type="password" id="adminPwd" placeholder="请输入管理员密码"/></div>
-    <button class="btn btn-primary" onclick="verifyAdmin()">进入后台</button>
+  <div class="admin-hd">
+    <div class="admin-title">📊 管理后台</div>
+    <div><div class="sync-btn" onclick="loadAdminData()">🔄 同步</div></div>
   </div>
-  <div id="adminPanel" style="display:none;">
-    <div class="admin-hd">
-      <div class="admin-title">📊 管理后台</div>
-      <div class="admin-btns">
-        <div class="sync-btn" onclick="loadAdminData()">🔄 同步</div>
-        <div class="out-btn"  onclick="logoutAdmin()">退出</div>
-      </div>
-    </div>
-    <div class="top-tab">
-      <div class="top-tab-item active" id="at-overview"  onclick="switchAdminTab('overview')">总览</div>
-      <div class="top-tab-item"        id="at-customers" onclick="switchAdminTab('customers')">客户</div>
-      <div class="top-tab-item"        id="at-goals"     onclick="switchAdminTab('goals')">目标</div>
-      <div class="top-tab-item"        id="at-employee"  onclick="switchAdminTab('employee')">员工</div>
-      <div class="top-tab-item"        id="at-message"   onclick="switchAdminTab('message')">消息</div>
-    </div>
-    <div id="ap-overview"></div>
-    <div id="ap-customers" style="display:none;"></div>
-    <div id="ap-goals"     style="display:none;"></div>
-    <div id="ap-employee"  style="display:none;"></div>
-    <div id="ap-message"   style="display:none;"></div>
+  <div class="admin-sub-tab">
+    <button class="admin-sub-tab-item active" id="at-overview"  onclick="switchAdminTab('overview')">总览</button>
+    <button class="admin-sub-tab-item"        id="at-customers" onclick="switchAdminTab('customers')">客户</button>
+    <button class="admin-sub-tab-item"        id="at-goals"     onclick="switchAdminTab('goals')">目标</button>
+    <button class="admin-sub-tab-item"        id="at-employee"  onclick="switchAdminTab('employee')">员工</button>
+    <button class="admin-sub-tab-item"        id="at-accounts"  onclick="switchAdminTab('accounts')">账户</button>
+    <button class="admin-sub-tab-item"        id="at-staffmsg"  onclick="switchAdminTab('staffmsg')">员工消息<span id="staffMsgDot" class="unread-dot" style="display:none;"></span></button>
+    <button class="admin-sub-tab-item"        id="at-message"   onclick="switchAdminTab('message')">发消息</button>
   </div>
+  <div id="ap-overview"></div>
+  <div id="ap-customers" style="display:none;"></div>
+  <div id="ap-goals"     style="display:none;"></div>
+  <div id="ap-employee"  style="display:none;"></div>
+  <div id="ap-accounts"  style="display:none;"></div>
+  <div id="ap-staffmsg"  style="display:none;"></div>
+  <div id="ap-message"   style="display:none;"></div>
 </div>
 
-<!-- 底部Tab -->
-<div class="tab-bar">
-  <div class="tab-item active" id="tabBtn-home"     onclick="switchTab('home')"><span class="tab-icon">🏠</span>首页</div>
-  <div class="tab-item"        id="tabBtn-customer" onclick="switchTab('customer')"><span class="tab-icon">👥</span>客户</div>
-  <div class="tab-item"        id="tabBtn-goal"     onclick="switchTab('goal')"><span class="tab-icon">🎯</span>目标</div>
-  <div class="tab-item"        id="tabBtn-admin"    onclick="switchTab('admin')"><span class="tab-icon">📊</span>管理</div>
+<!-- 员工底部导航 -->
+<div class="tab-bar" id="staffTabBar" style="display:none;">
+  <div class="tab-item active" id="s-tabBtn-home"    onclick="switchTab('home')"><span class="tab-icon">🏠</span>首页</div>
+  <div class="tab-item"       id="s-tabBtn-customer" onclick="switchTab('customer')"><span class="tab-icon">👥</span>客户</div>
+  <div class="tab-item"       id="s-tabBtn-goal"     onclick="switchTab('goal')"><span class="tab-icon">🎯</span>目标</div>
+  <div class="tab-item"       id="s-tabBtn-message"  onclick="switchTab('message')"><span class="tab-icon">📨</span>消息</div>
+  <div class="tab-item"       id="s-tabBtn-mine"     onclick="switchTab('mine')"><span class="tab-icon">👤</span>我的</div>
 </div>
 
-<!-- 客户弹窗 -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeForm()"></div>
-<div class="modal-box" id="modalBox" style="display:none;">
-  <div class="modal-title" id="modalTitle">添加客户</div>
-  <div class="form-group"><label class="form-label">姓名 *</label><input class="form-input" id="f_name" placeholder="请输入客户姓名"/></div>
-  <div class="form-group"><label class="form-label">电话 *</label><input class="form-input" id="f_phone" type="tel" placeholder="联系电话"/></div>
-  <div class="form-group"><label class="form-label">公司</label><input class="form-input" id="f_company" placeholder="公司名称"/></div>
-  <div class="form-group"><label class="form-label">职位</label><input class="form-input" id="f_position" placeholder="职位"/></div>
-  <div class="form-group"><label class="form-label">来源渠道</label><input class="form-input" id="f_source" placeholder="如：转介绍、电话开发"/></div>
-  <div class="form-group"><label class="form-label">意向金额（元）</label><input class="form-input" id="f_amount" type="number" placeholder="预计成交金额"/></div>
-  <div class="form-group"><label class="form-label">客户状态</label>
-    <select class="form-select" id="f_status">
-      <option value="follow">跟进中</option>
-      <option value="intent">意向客户</option>
-      <option value="deal">已成交</option>
-      <option value="lost">已流失</option>
-    </select>
-  </div>
-  <div class="form-group"><label class="form-label">备注</label><textarea class="form-textarea" id="f_remark" placeholder="跟进备注..."></textarea></div>
-  <button class="btn btn-primary" onclick="submitCustomer()">保存</button>
-  <button class="btn btn-gray" onclick="closeForm()">取消</button>
+<!-- 管理员底部导航 -->
+<div class="tab-bar" id="adminTabBar" style="display:none;">
+  <div class="tab-item active" id="a-tabBtn-home"     onclick="switchTab('home')"><span class="tab-icon">🏠</span>首页</div>
+  <div class="tab-item"        id="a-tabBtn-customer" onclick="goCustomerList()"><span class="tab-icon">👥</span>客户</div>
+  <div class="tab-item"        id="a-tabBtn-goal"     onclick="switchTab('goal')"><span class="tab-icon">🎯</span>目标</div>
+  <div class="tab-item"        id="a-tabBtn-admin"    onclick="switchTab('admin')"><span class="tab-icon">📊</span>管理</div>
+  <div class="tab-item"        id="a-tabBtn-mine"     onclick="switchTab('mine')"><span class="tab-icon">👤</span>我的</div>
 </div>
 
 <script>
 // ============================================================
-// 账号系统
-// ============================================================
-var ACCOUNTS = {
-  '王凯':   { password: '888999', name: '王凯',   role: 'staff' },
-  '朱红':   { password: '999000', name: '朱红',   role: 'staff' },
-  'admin':  { password: 'admin888', name: '管理员', role: 'admin' }
-};
-
-var currentAccount = null;
-
-function doLogin() {
-  var username = document.getElementById('loginUser').value.trim();
-  var password = document.getElementById('loginPwd').value.trim();
-  var errEl    = document.getElementById('loginError');
-
-  if (!ACCOUNTS[username] || ACCOUNTS[username].password !== password) {
-    errEl.style.display = 'block';
-    return;
-  }
-  errEl.style.display = 'none';
-  currentAccount = ACCOUNTS[username];
-  localStorage.setItem('crmUser', JSON.stringify(currentAccount));
-  document.getElementById('loginPage').style.display = 'none';
-  initApp();
-}
-
-function checkLogin() {
-  var saved = localStorage.getItem('crmUser');
-  if (saved) {
-    currentAccount = JSON.parse(saved);
-    document.getElementById('loginPage').style.display = 'none';
-    initApp();
-  }
-}
-
-function doLogout() {
-  localStorage.removeItem('crmUser');
-  localStorage.removeItem('adminVerified');
-  currentAccount = null;
-  location.reload();
-}
-
-// ============================================================
-// Firebase配置
+// Firebase 初始化
 // ============================================================
 var firebaseConfig = {
   apiKey:            "AIzaSyBvQRKoNHHS3QumbLbh7TsLWz9B6ntUl9w",
@@ -373,87 +425,197 @@ var firebaseConfig = {
   messagingSenderId: "14749042485",
   appId:             "1:14749042485:web:a0517b8b075cf9a2e52e7c"
 };
-
 firebase.initializeApp(firebaseConfig);
 var db   = firebase.firestore();
 var auth = firebase.auth();
 
+// ============================================================
 // 全局变量
-var currentUser   = null;
-var allCustomers  = [];
-var editingId     = null;
-var dailyGoalId   = null;
-var monthlyGoalId = null;
-var msgListener   = null;
-var lastMsgId     = localStorage.getItem('lastMsgId') || '';
-var statusLabel   = {follow:'跟进中',intent:'意向客户',deal:'已成交',lost:'已流失'};
-var ADMIN_PWD     = 'admin888';
+// ============================================================
+var currentAccount = null;
+var currentUser    = null;
+var allCustomers   = [];
+var editingId      = null;
+var dailyGoalId    = null;
+var monthlyGoalId  = null;
+var lastMsgId      = localStorage.getItem('lastMsgId')      || '';
+var lastStaffMsgId = localStorage.getItem('lastStaffMsgId') || '';
+var msgTarget      = '全体';
+var statusLabel    = { follow:'跟进中', intent:'意向客户', deal:'已成交', lost:'已流失' };
+
+var DEFAULT_ACCOUNTS = {
+  '王凯': { password:'888999',    name:'王凯', role:'staff' },
+  '朱红': { password:'999000',    name:'朱红', role:'staff' },
+  '刘总': { password:'164811795', name:'刘总', role:'admin' }
+};
 
 // ============================================================
-// 初始化App
+// 页面加载
+// ============================================================
+document.addEventListener('DOMContentLoaded', function () {
+  initFirebaseAccounts();
+  document.getElementById('loginPwd').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') doLogin();
+  });
+  var saved = localStorage.getItem('crmUser');
+  if (saved) {
+    try {
+      currentAccount = JSON.parse(saved);
+      db.collection('accounts').doc(currentAccount.name).get().then(function (doc) {
+        if (doc.exists && doc.data().password === currentAccount.password) {
+          currentAccount = doc.data();
+          localStorage.setItem('crmUser', JSON.stringify(currentAccount));
+          hideLoginPage();
+          startFirebase();
+        } else {
+          localStorage.removeItem('crmUser');
+          currentAccount = null;
+        }
+      }).catch(function () {
+        hideLoginPage();
+        startFirebase();
+      });
+    } catch (e) { localStorage.removeItem('crmUser'); }
+  }
+});
+
+// ============================================================
+// 初始化默认账号
+// ============================================================
+function initFirebaseAccounts() {
+  Object.keys(DEFAULT_ACCOUNTS).forEach(function (uname) {
+    db.collection('accounts').doc(uname).get().then(function (doc) {
+      if (!doc.exists) db.collection('accounts').doc(uname).set(DEFAULT_ACCOUNTS[uname]);
+    });
+  });
+}
+
+// ============================================================
+// 登录 / 登出
+// ============================================================
+function doLogin() {
+  var username = document.getElementById('loginUser').value.trim();
+  var password = document.getElementById('loginPwd').value.trim();
+  var errEl    = document.getElementById('loginError');
+  errEl.style.display = 'none';
+  if (!username || !password) { errEl.style.display = 'block'; return; }
+  db.collection('accounts').doc(username).get().then(function (doc) {
+    if (!doc.exists || doc.data().password !== password) {
+      errEl.style.display = 'block'; return;
+    }
+    currentAccount = doc.data();
+    localStorage.setItem('crmUser', JSON.stringify(currentAccount));
+    hideLoginPage();
+    startFirebase();
+  }).catch(function () {
+    errEl.textContent   = '网络异常，请稍后重试';
+    errEl.style.display = 'block';
+  });
+}
+
+function doLogout() {
+  localStorage.removeItem('crmUser');
+  localStorage.removeItem('lastMsgId');
+  localStorage.removeItem('lastStaffMsgId');
+  currentAccount = null; currentUser = null;
+  location.reload();
+}
+
+function hideLoginPage() {
+  document.getElementById('loginPage').classList.add('hidden');
+}
+
+// ============================================================
+// Firebase 匿名登录（含静默重试）
+// ============================================================
+function startFirebase() {
+  document.getElementById('headerSub').textContent = '欢迎，' + currentAccount.name;
+  auth.signInAnonymously().then(function (result) {
+    currentUser = result.user;
+    initApp();
+  }).catch(function (err) {
+    console.error('Firebase连接异常:', err);
+    setTimeout(function () {
+      auth.signInAnonymously().then(function (result) {
+        currentUser = result.user;
+        initApp();
+      }).catch(function (err2) {
+        document.getElementById('headerSub').textContent = '网络异常，请刷新重试';
+        console.error(err2);
+      });
+    }, 2000);
+  });
+}
+
+// ============================================================
+// 初始化 App
 // ============================================================
 function initApp() {
   var now     = new Date();
-  var today   = now.toISOString().slice(0,10);
-  var month   = today.slice(0,7);
-  var dateStr = now.toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
-
+  var today   = now.toISOString().slice(0, 10);
+  var month   = today.slice(0, 7);
+  var dateStr = now.toLocaleDateString('zh-CN', {
+    year:'numeric', month:'long', day:'numeric', weekday:'long'
+  });
   document.getElementById('homeDate').textContent     = dateStr;
   document.getElementById('dailyTitle').textContent   = '今日目标（' + today + '）';
   document.getElementById('monthlyTitle').textContent = '月度目标（' + month + '）';
   document.getElementById('homeUser').textContent     = currentAccount.name;
   document.getElementById('headerSub').textContent    = '欢迎，' + currentAccount.name;
+  document.getElementById('mineUserInfo').textContent =
+    '账号：' + currentAccount.name + '  角色：' +
+    (currentAccount.role === 'admin' ? '管理员' : '员工');
 
-  // 匿名登录Firebase
-  auth.signInAnonymously()
-    .then(function(result) {
-      currentUser = result.user;
-      loadHomeData();
-      loadCustomers();
-      loadGoals();
-      startMsgListener(); // 开始监听消息
-      // 如果是管理员账号自动进入后台
-      if (currentAccount.role === 'admin') {
-        localStorage.setItem('adminVerified','yes');
-        document.getElementById('adminLogin').style.display = 'none';
-        document.getElementById('adminPanel').style.display = 'block';
-      }
-    })
-    .catch(function(err) {
-      document.getElementById('headerSub').textContent = '连接失败，请刷新重试';
-      console.error('Auth error:', err);
-    });
+  if (currentAccount.role === 'admin') {
+    document.getElementById('adminTabBar').style.display      = 'flex';
+    document.getElementById('todayStatSection').style.display = 'none';
+    loadAdminData();
+    startAdminMsgListener();
+  } else {
+    document.getElementById('staffTabBar').style.display      = 'flex';
+    document.getElementById('todayStatSection').style.display = 'block';
+    startMsgListener();
+  }
+  loadHomeData();
+  loadGoals();
 }
 
 // ============================================================
-// 页面加载
-// ============================================================
-document.addEventListener('DOMContentLoaded', function() {
-  checkLogin();
-  // 回车键登录
-  document.getElementById('loginPwd').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') doLogin();
-  });
-});
-
-// ============================================================
-// Tab切换
+// Tab 切换
 // ============================================================
 function switchTab(tab) {
-  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
-  document.querySelectorAll('.tab-item').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('active'); });
+  document.querySelectorAll('.tab-item').forEach(function (t) { t.classList.remove('active'); });
   document.getElementById('page-' + tab).classList.add('active');
-  document.getElementById('tabBtn-' + tab).classList.add('active');
-  if (tab === 'home')     { loadHomeData(); }
-  if (tab === 'customer') { loadCustomers(); }
-  if (tab === 'goal')     { loadGoals(); }
-  if (tab === 'admin') {
-    if (localStorage.getItem('adminVerified') === 'yes') {
-      document.getElementById('adminLogin').style.display = 'none';
-      document.getElementById('adminPanel').style.display = 'block';
-      loadAdminData();
-    }
-  }
+  var s = document.getElementById('s-tabBtn-' + tab);
+  var a = document.getElementById('a-tabBtn-' + tab);
+  if (s) s.classList.add('active');
+  if (a) a.classList.add('active');
+  if (tab === 'home')    loadHomeData();
+  if (tab === 'goal')    loadGoals();
+  if (tab === 'admin')   loadAdminData();
+  if (tab === 'message') loadStaffSentHistory();
+}
+
+// ============================================================
+// 客户列表页跳转
+// ============================================================
+function goCustomerList() {
+  document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('active'); });
+  document.querySelectorAll('.tab-item').forEach(function (t) { t.classList.remove('active'); });
+  document.getElementById('page-customerlist').classList.add('active');
+  var s = document.getElementById('s-tabBtn-customer');
+  var a = document.getElementById('a-tabBtn-customer');
+  if (s) s.classList.add('active');
+  if (a) a.classList.add('active');
+  document.getElementById('listTitle').textContent =
+    currentAccount.role === 'admin' ? '全员客户列表' : '我的客户列表';
+  loadCustomers();
+}
+
+function backFromList() {
+  if (currentAccount.role === 'admin') switchTab('admin');
+  else switchTab('customer');
 }
 
 // ============================================================
@@ -461,22 +623,21 @@ function switchTab(tab) {
 // ============================================================
 function loadHomeData() {
   if (!currentUser) return;
-  var today = new Date().toISOString().slice(0,10);
-  var month = today.slice(0,7);
+  var today = new Date().toISOString().slice(0, 10);
+  var month = today.slice(0, 7);
 
   db.collection('goals')
     .where('userName','==', currentAccount.name)
     .where('type','==','daily')
-    .where('date','==',today)
-    .get()
-    .then(function(snap) {
+    .where('date','==', today)
+    .get().then(function (snap) {
       var card = document.getElementById('homeDailyCard');
       if (!snap.empty) {
         var g = snap.docs[0].data();
         card.innerHTML =
           '<div class="stat-row">' +
-          '<div><span class="stat-num">' + (g.newCustomers||0) + '</span><span class="stat-label">新增客户</span></div>' +
-          '<div><span class="stat-num">' + (g.calls||0) + '</span><span class="stat-label">拨打电话</span></div>' +
+          '<div><span class="stat-num">' + (g.newCustomers||0)    + '</span><span class="stat-label">新增客户</span></div>' +
+          '<div><span class="stat-num">' + (g.calls||0)           + '</span><span class="stat-label">拨打电话</span></div>' +
           '<div><span class="stat-num">' + (g.intentCustomers||0) + '</span><span class="stat-label">意向客户</span></div>' +
           '</div>';
       } else {
@@ -487,89 +648,99 @@ function loadHomeData() {
   db.collection('goals')
     .where('userName','==', currentAccount.name)
     .where('type','==','monthly')
-    .where('month','==',month)
-    .get()
-    .then(function(snap) {
+    .where('month','==', month)
+    .get().then(function (snap) {
       var card = document.getElementById('homeMonthCard');
       if (!snap.empty) {
         var g   = snap.docs[0].data();
         var pct = g.salesTarget > 0
-          ? Math.min(Math.round(g.salesDone/g.salesTarget*100),100) : 0;
+          ? Math.min(Math.round(g.salesDone / g.salesTarget * 100), 100) : 0;
         card.innerHTML =
-          '<div class="prow"><span>目标：¥' + (g.salesTarget||0) + '</span><span>已完成：¥' + (g.salesDone||0) + '</span></div>' +
+          '<div class="prow"><span>目标：¥' + (g.salesTarget||0) +
+          '</span><span>已完成：¥' + (g.salesDone||0) + '</span></div>' +
           '<div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
-          '<div class="ppct">完成率：' + pct + '% &nbsp;<span style="color:#ff4d4f;">未达成：¥' + (g.salesUnfinished||0) + '</span></div>';
+          '<div class="ppct">完成率：' + pct + '% &nbsp;<span style="color:#ff4d4f;">未达成：¥' +
+          (g.salesUnfinished||0) + '</span></div>';
       } else {
         card.innerHTML = '<div class="empty">暂无月度计划</div>';
       }
     });
+
+  if (currentAccount.role === 'staff') {
+    db.collection('customers')
+      .where('userName','==', currentAccount.name)
+      .get().then(function (snap) {
+        var all         = snap.docs.map(function (d) { return d.data(); });
+        var todayNew    = all.filter(function (c) {
+          if (!c.createTime) return false;
+          var d = c.createTime.toDate ? c.createTime.toDate() : new Date(c.createTime);
+          return d.toISOString().slice(0, 10) === today;
+        }).length;
+        var intentCount = all.filter(function (c) { return c.status === 'intent'; }).length;
+        var dealCount   = all.filter(function (c) { return c.status === 'deal';   }).length;
+        document.getElementById('todayStatCard').innerHTML =
+          '<div class="today-stat-grid">' +
+          '<div class="today-stat-item"><div class="today-stat-num">'                        + todayNew    + '</div><div class="today-stat-lbl">今日新增客户</div></div>' +
+          '<div class="today-stat-item"><div class="today-stat-num" style="color:#f5a623;">' + intentCount + '</div><div class="today-stat-lbl">意向客户总数</div></div>' +
+          '<div class="today-stat-item"><div class="today-stat-num" style="color:#34a853;">' + dealCount   + '</div><div class="today-stat-lbl">已成交总数</div></div>' +
+          '</div>';
+      });
+  }
 }
 
 // ============================================================
-// 客户管理
+// 客户管理（只用 where，本地排序，彻底解决加载中问题）
 // ============================================================
 function loadCustomers() {
   if (!currentUser) return;
-  db.collection('customers')
-    .where('userName','==', currentAccount.name)
-    .orderBy('createTime','desc')
-    .get()
-    .then(function(snap) {
-      allCustomers = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
-      renderCustomers(allCustomers);
-    })
-    .catch(function(err){ console.error('loadCustomers:', err); });
+  document.getElementById('customerList').innerHTML = '<div class="empty">加载中...</div>';
+  var q = currentAccount.role === 'admin'
+    ? db.collection('customers')
+    : db.collection('customers').where('userName', '==', currentAccount.name);
+  q.get().then(function (snap) {
+    allCustomers = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+    allCustomers.sort(function (a, b) {
+      var ta = a.createTime && a.createTime.toDate ? a.createTime.toDate().getTime() : 0;
+      var tb = b.createTime && b.createTime.toDate ? b.createTime.toDate().getTime() : 0;
+      return tb - ta;
+    });
+    renderCustomers(allCustomers);
+  }).catch(function (err) {
+    document.getElementById('customerList').innerHTML =
+      '<div class="empty">加载失败，请返回重试</div>';
+    console.error('loadCustomers:', err);
+  });
 }
 
 function renderCustomers(list) {
   var container = document.getElementById('customerList');
-  var tableWrap = document.getElementById('customerTable');
-
+  if (!container) return;
+  var isAdmin = currentAccount.role === 'admin';
   if (!list || list.length === 0) {
-    tableWrap.innerHTML = '';
-    container.innerHTML = '<div class="empty">暂无客户，点击上方添加</div>';
+    container.innerHTML = '<div class="empty">暂无客户记录，点击"添加客户"开始录入</div>';
     return;
   }
-
-  // 表格视图
-  var tHtml =
-    '<table>' +
-    '<thead><tr>' +
-    '<th>姓名</th><th>电话</th><th>公司</th><th>状态</th><th>意向金额</th><th>操作</th>' +
-    '</tr></thead><tbody>';
-  list.forEach(function(c) {
-    tHtml +=
-      '<tr>' +
-      '<td><b>' + c.name + '</b></td>' +
-      '<td>' + c.phone + '</td>' +
-      '<td>' + (c.company||'-') + '</td>' +
-      '<td><span class="tag tag-' + c.status + '">' + (statusLabel[c.status]||'') + '</span></td>' +
-      '<td>' + (c.intentAmount ? '¥'+c.intentAmount : '-') + '</td>' +
-      '<td>' +
-      '<button class="btn-sm btn-edit-sm" onclick="editCustomer(\'' + c.id + '\')">编辑</button> ' +
-      '<button class="btn-sm btn-del-sm"  onclick="deleteCustomer(\'' + c.id + '\')">删除</button>' +
-      '</td>' +
-      '</tr>';
-  });
-  tHtml += '</tbody></table>';
-  tableWrap.innerHTML = tHtml;
-
-  // 卡片视图（手机端详情）
   var html = '';
-  list.forEach(function(c) {
+  list.forEach(function (c) {
+    var timeStr = c.createTime && c.createTime.toDate
+      ? c.createTime.toDate().toLocaleString('zh-CN') : '-';
     html +=
       '<div class="card" style="margin-bottom:12px;">' +
       '<div class="c-header">' +
-      '<span class="c-name">' + c.name + '</span>' +
+      '<span class="c-name">' + esc(c.name) + '</span>' +
       '<span class="tag tag-' + c.status + '">' + (statusLabel[c.status]||'') + '</span>' +
       '</div>' +
-      '<div class="c-info">📞 ' + c.phone + '</div>' +
-      (c.company ? '<div class="c-info">🏢 ' + c.company + (c.position ? ' · '+c.position : '') + '</div>' : '') +
-      (c.intentAmount ? '<div class="c-info">💰 意向金额：¥' + c.intentAmount + '</div>' : '') +
-      (c.remark ? '<div class="c-info">📝 ' + c.remark + '</div>' : '') +
+      '<div class="c-info">📞 ' + esc(c.phone) + '</div>' +
+      (c.company      ? '<div class="c-info">🏢 ' + esc(c.company) + (c.position ? ' · ' + esc(c.position) : '') + '</div>' : '') +
+      (c.source       ? '<div class="c-info">📣 来源：' + esc(c.source) + '</div>' : '') +
+      (c.intentAmount ? '<div class="c-info">💰 意向金额：¥' + esc(c.intentAmount) + '</div>' : '') +
+      (c.remark       ? '<div class="c-info">📝 ' + esc(c.remark) + '</div>' : '') +
+      '<div class="c-info" style="color:#aaa;font-size:12px;">🕐 ' + timeStr + '</div>' +
+      (isAdmin ? '<div class="c-info" style="color:#1a73e8;">👤 员工：' + esc(c.userName||'-') + '</div>' : '') +
       '<div class="action-row">' +
+      '<button class="btn-sm btn-view-sm" onclick="viewDetail(\'' + c.id + '\')">查看详情</button>' +
       '<button class="btn-sm btn-edit-sm" onclick="editCustomer(\'' + c.id + '\')">编辑</button>' +
-      '<button class="btn-sm btn-del-sm"  onclick="deleteCustomer(\'' + c.id + '\')">删除</button>' +
+      (isAdmin ? '<button class="btn-sm btn-del-sm" onclick="adminDeleteCustomer(\'' + c.id + '\')">删除</button>' : '') +
       '</div></div>';
   });
   container.innerHTML = html;
@@ -578,39 +749,37 @@ function renderCustomers(list) {
 function searchCustomers() {
   var key = document.getElementById('searchInput').value.trim();
   if (!key) { renderCustomers(allCustomers); return; }
-  var result = allCustomers.filter(function(c) {
-    return c.name.includes(key) ||
-           c.phone.includes(key) ||
-           (c.company||'').includes(key);
+  var res = allCustomers.filter(function (c) {
+    return c.name.includes(key) || c.phone.includes(key) || (c.company||'').includes(key);
   });
-  renderCustomers(result);
+  renderCustomers(res);
 }
 
 function showAddForm() {
   editingId = null;
   document.getElementById('modalTitle').textContent = '添加客户';
   ['f_name','f_phone','f_company','f_position','f_source','f_remark','f_amount']
-    .forEach(function(id){ document.getElementById(id).value = ''; });
+    .forEach(function (id) { document.getElementById(id).value = ''; });
   document.getElementById('f_status').value = 'follow';
   document.getElementById('modalOverlay').classList.add('show');
   document.getElementById('modalBox').style.display = 'block';
 }
 
 function editCustomer(id) {
-  var c = allCustomers.find(function(x){ return x.id === id; });
+  var c = allCustomers.find(function (x) { return x.id === id; });
   if (!c) return;
   editingId = id;
-  document.getElementById('modalTitle').textContent   = '编辑客户';
-  document.getElementById('f_name').value             = c.name || '';
-  document.getElementById('f_phone').value            = c.phone || '';
-  document.getElementById('f_company').value          = c.company || '';
-  document.getElementById('f_position').value         = c.position || '';
-  document.getElementById('f_source').value           = c.source || '';
-  document.getElementById('f_amount').value           = c.intentAmount || '';
-  document.getElementById('f_status').value           = c.status || 'follow';
-  document.getElementById('f_remark').value           = c.remark || '';
+  document.getElementById('modalTitle').textContent = '编辑客户';
+  document.getElementById('f_name').value           = c.name         || '';
+  document.getElementById('f_phone').value          = c.phone        || '';
+  document.getElementById('f_company').value        = c.company      || '';
+  document.getElementById('f_position').value       = c.position     || '';
+  document.getElementById('f_source').value         = c.source       || '';
+  document.getElementById('f_amount').value         = c.intentAmount || '';
+  document.getElementById('f_status').value         = c.status       || 'follow';
+  document.getElementById('f_remark').value         = c.remark       || '';
   document.getElementById('modalOverlay').classList.add('show');
-  document.getElementById('modalBox').style.display   = 'block';
+  document.getElementById('modalBox').style.display = 'block';
 }
 
 function closeForm() {
@@ -619,15 +788,22 @@ function closeForm() {
 }
 
 function submitCustomer() {
-  var name  = document.getElementById('f_name').value.trim();
-  var phone = document.getElementById('f_phone').value.trim();
-  if (!name || !phone) { alert('姓名和电话必填'); return; }
+  var name    = document.getElementById('f_name').value.trim();
+  var phone   = document.getElementById('f_phone').value.trim();
+  var company = document.getElementById('f_company').value.trim();
+  if (!name)                   { alert('姓名为必填项');         return; }
+  if (!phone)                  { alert('手机号为必填项');       return; }
+  if (!company)                { alert('公司为必填项');         return; }
+  if (!/^\d{11}$/.test(phone)) { alert('手机号必须是11位数字'); return; }
+  var dupName    = allCustomers.find(function (c) { return c.name    === name    && c.id !== editingId; });
+  var dupPhone   = allCustomers.find(function (c) { return c.phone   === phone   && c.id !== editingId; });
+  var dupCompany = allCustomers.find(function (c) { return c.company === company && c.id !== editingId; });
+  if (dupName)    { alert('客户姓名"'  + name    + '"已存在'); return; }
+  if (dupPhone)   { alert('手机号"'    + phone   + '"已存在'); return; }
+  if (dupCompany) { alert('公司名称"'  + company + '"已存在'); return; }
   var data = {
-    uid:          currentUser.uid,
-    userName:     currentAccount.name,
-    name:         name,
-    phone:        phone,
-    company:      document.getElementById('f_company').value.trim(),
+    uid: currentUser.uid, userName: currentAccount.name,
+    name: name, phone: phone, company: company,
     position:     document.getElementById('f_position').value.trim(),
     source:       document.getElementById('f_source').value.trim(),
     intentAmount: document.getElementById('f_amount').value.trim(),
@@ -640,17 +816,45 @@ function submitCustomer() {
     : db.collection('customers').add(Object.assign({}, data, {
         createTime: firebase.firestore.FieldValue.serverTimestamp()
       }));
-  op.then(function() {
+  op.then(function () {
     showToast(editingId ? '更新成功' : '添加成功');
     closeForm();
-    loadCustomers();
-  }).catch(function(err){ alert('保存失败：' + err.message); });
+    goCustomerList();
+    loadHomeData();
+  }).catch(function (err) { alert('保存失败：' + err.message); });
 }
 
-function deleteCustomer(id) {
-  if (!confirm('确认删除？删除后无法恢复')) return;
-  db.collection('customers').doc(id).delete()
-    .then(function(){ showToast('已删除'); loadCustomers(); });
+function viewDetail(id) {
+  var c = allCustomers.find(function (x) { return x.id === id; });
+  if (!c) return;
+  var timeStr = c.createTime && c.createTime.toDate
+    ? c.createTime.toDate().toLocaleString('zh-CN') : '-';
+  document.getElementById('detailContent').innerHTML =
+    row('姓名',     c.name)     + row('手机号',   c.phone)    +
+    row('公司',     c.company)  + row('职位',     c.position) +
+    row('来源渠道', c.source)   +
+    row('意向金额', c.intentAmount ? '¥' + c.intentAmount : '-') +
+    '<div class="detail-row"><span class="detail-label">客户状态</span><span class="detail-value">' +
+    '<span class="tag tag-' + c.status + '">' + (statusLabel[c.status]||'-') + '</span></span></div>' +
+    row('备注',     c.remark)   +
+    row('所属员工', c.userName) +
+    row('添加时间', timeStr);
+  document.getElementById('detailOverlay').classList.add('show');
+  document.getElementById('detailBox').style.display = 'block';
+}
+
+function closeDetail() {
+  document.getElementById('detailOverlay').classList.remove('show');
+  document.getElementById('detailBox').style.display = 'none';
+}
+
+function adminDeleteCustomer(id) {
+  if (!confirm('确认删除该客户？删除后无法恢复')) return;
+  db.collection('customers').doc(id).delete().then(function () {
+    showToast('客户已删除');
+    loadCustomers();
+    loadAdminData();
+  }).catch(function (err) { alert('删除失败：' + err.message); });
 }
 
 // ============================================================
@@ -665,56 +869,56 @@ function switchGoalTab(tab) {
 
 function loadGoals() {
   if (!currentUser) return;
-  var today = new Date().toISOString().slice(0,10);
-  var month = today.slice(0,7);
-
+  var today = new Date().toISOString().slice(0, 10);
+  var month = today.slice(0, 7);
   db.collection('goals')
     .where('userName','==', currentAccount.name)
     .where('type','==','daily')
-    .where('date','==',today)
-    .get()
-    .then(function(snap) {
+    .where('date','==', today)
+    .get().then(function (snap) {
       if (!snap.empty) {
-        var doc = snap.docs[0];
-        dailyGoalId = doc.id;
+        var doc = snap.docs[0]; dailyGoalId = doc.id;
         var g = doc.data();
-        document.getElementById('d_new').value    = g.newCustomers || '';
-        document.getElementById('d_calls').value  = g.calls || '';
+        document.getElementById('d_new').value    = g.newCustomers    || '';
+        document.getElementById('d_calls').value  = g.calls           || '';
         document.getElementById('d_intent').value = g.intentCustomers || '';
-        document.getElementById('pv_new').textContent    = g.newCustomers || 0;
-        document.getElementById('pv_calls').textContent  = g.calls || 0;
+        document.getElementById('pv_new').textContent    = g.newCustomers    || 0;
+        document.getElementById('pv_calls').textContent  = g.calls           || 0;
         document.getElementById('pv_intent').textContent = g.intentCustomers || 0;
         document.getElementById('dailyPreview').style.display = 'block';
+        document.getElementById('btnDelDaily').style.display  = 'block';
       } else {
         dailyGoalId = null;
+        ['d_new','d_calls','d_intent'].forEach(function (id) { document.getElementById(id).value = ''; });
         document.getElementById('dailyPreview').style.display = 'none';
+        document.getElementById('btnDelDaily').style.display  = 'none';
       }
     });
-
   db.collection('goals')
     .where('userName','==', currentAccount.name)
     .where('type','==','monthly')
-    .where('month','==',month)
-    .get()
-    .then(function(snap) {
+    .where('month','==', month)
+    .get().then(function (snap) {
       if (!snap.empty) {
-        var doc = snap.docs[0];
-        monthlyGoalId = doc.id;
+        var doc = snap.docs[0]; monthlyGoalId = doc.id;
         var g   = doc.data();
         var pct = g.salesTarget > 0
-          ? Math.min(Math.round(g.salesDone/g.salesTarget*100),100) : 0;
-        document.getElementById('m_target').value        = g.salesTarget || '';
-        document.getElementById('m_done').value          = g.salesDone || '';
+          ? Math.min(Math.round(g.salesDone / g.salesTarget * 100), 100) : 0;
+        document.getElementById('m_target').value        = g.salesTarget     || '';
+        document.getElementById('m_done').value          = g.salesDone       || '';
         document.getElementById('m_left').value          = g.salesUnfinished || '';
-        document.getElementById('mp_target').textContent = g.salesTarget || 0;
-        document.getElementById('mp_done').textContent   = g.salesDone || 0;
+        document.getElementById('mp_target').textContent = g.salesTarget     || 0;
+        document.getElementById('mp_done').textContent   = g.salesDone       || 0;
         document.getElementById('mp_left').textContent   = g.salesUnfinished || 0;
         document.getElementById('mp_pct').textContent    = pct;
         document.getElementById('mp_bar').style.width    = pct + '%';
         document.getElementById('monthlyPreview').style.display = 'block';
+        document.getElementById('btnDelMonthly').style.display  = 'block';
       } else {
         monthlyGoalId = null;
+        ['m_target','m_done','m_left'].forEach(function (id) { document.getElementById(id).value = ''; });
         document.getElementById('monthlyPreview').style.display = 'none';
+        document.getElementById('btnDelMonthly').style.display  = 'none';
       }
     });
 }
@@ -727,77 +931,227 @@ function calcLeft() {
 
 function saveDailyGoal() {
   if (!currentUser) return;
-  var today = new Date().toISOString().slice(0,10);
+  var today = new Date().toISOString().slice(0, 10);
   var data = {
-    uid:             currentUser.uid,
-    userName:        currentAccount.name,
-    type:            'daily',
-    date:            today,
+    uid: currentUser.uid, userName: currentAccount.name,
+    type: 'daily', date: today,
     newCustomers:    Number(document.getElementById('d_new').value)    || 0,
     calls:           Number(document.getElementById('d_calls').value)  || 0,
     intentCustomers: Number(document.getElementById('d_intent').value) || 0,
-    updateTime:      firebase.firestore.FieldValue.serverTimestamp()
+    updateTime: firebase.firestore.FieldValue.serverTimestamp()
   };
   var op = dailyGoalId
     ? db.collection('goals').doc(dailyGoalId).update(data)
     : db.collection('goals').add(Object.assign({}, data, {
         createTime: firebase.firestore.FieldValue.serverTimestamp()
       }));
-  op.then(function(){ showToast('保存成功'); loadGoals(); loadHomeData(); });
+  op.then(function () { showToast('保存成功'); loadGoals(); loadHomeData(); });
 }
 
 function saveMonthlyGoal() {
   if (!currentUser) return;
-  var month = new Date().toISOString().slice(0,7);
+  var month = new Date().toISOString().slice(0, 7);
   var data = {
-    uid:             currentUser.uid,
-    userName:        currentAccount.name,
-    type:            'monthly',
-    month:           month,
+    uid: currentUser.uid, userName: currentAccount.name,
+    type: 'monthly', month: month,
     salesTarget:     Number(document.getElementById('m_target').value) || 0,
     salesDone:       Number(document.getElementById('m_done').value)   || 0,
     salesUnfinished: Number(document.getElementById('m_left').value)   || 0,
-    updateTime:      firebase.firestore.FieldValue.serverTimestamp()
+    updateTime: firebase.firestore.FieldValue.serverTimestamp()
   };
   var op = monthlyGoalId
     ? db.collection('goals').doc(monthlyGoalId).update(data)
     : db.collection('goals').add(Object.assign({}, data, {
         createTime: firebase.firestore.FieldValue.serverTimestamp()
       }));
-  op.then(function(){ showToast('保存成功'); loadGoals(); loadHomeData(); });
+  op.then(function () { showToast('保存成功'); loadGoals(); loadHomeData(); });
+}
+
+function deleteDailyGoal() {
+  if (!dailyGoalId || !confirm('确认删除今日计划？')) return;
+  db.collection('goals').doc(dailyGoalId).delete().then(function () {
+    dailyGoalId = null; showToast('已删除'); loadGoals(); loadHomeData();
+  });
+}
+
+function deleteMonthlyGoal() {
+  if (!monthlyGoalId || !confirm('确认删除本月计划？')) return;
+  db.collection('goals').doc(monthlyGoalId).delete().then(function () {
+    monthlyGoalId = null; showToast('已删除'); loadGoals(); loadHomeData();
+  });
 }
 
 // ============================================================
-// 实时消息系统
+// 修改密码
+// ============================================================
+function changePwd() {
+  var oldPwd     = document.getElementById('oldPwd').value.trim();
+  var newPwd     = document.getElementById('newPwd').value.trim();
+  var confirmPwd = document.getElementById('confirmPwd').value.trim();
+  if (!oldPwd || !newPwd || !confirmPwd) { alert('请填写所有密码字段'); return; }
+  if (oldPwd !== currentAccount.password) { alert('当前密码错误'); return; }
+  if (newPwd.length < 6) { alert('新密码至少需要6位'); return; }
+  if (newPwd !== confirmPwd) { alert('两次输入的新密码不一致'); return; }
+  db.collection('accounts').doc(currentAccount.name).update({ password: newPwd })
+    .then(function () {
+      currentAccount.password = newPwd;
+      localStorage.setItem('crmUser', JSON.stringify(currentAccount));
+      document.getElementById('oldPwd').value     = '';
+      document.getElementById('newPwd').value     = '';
+      document.getElementById('confirmPwd').value = '';
+      showToast('密码修改成功');
+    })
+    .catch(function (err) { alert('修改失败：' + err.message); });
+}
+
+// ============================================================
+// 员工端：发送消息给管理员
+// ============================================================
+function staffSendMessage() {
+  var content = document.getElementById('staffMsgInput').value.trim();
+  if (!content) { alert('请输入消息内容'); return; }
+  db.collection('staffMessages').add({
+    content:    content,
+    sender:     currentAccount.name,
+    target:     'admin',
+    isRead:     false,
+    createTime: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(function () {
+    showToast('消息已发送给管理员');
+    document.getElementById('staffMsgInput').value = '';
+    loadStaffSentHistory();
+  }).catch(function (err) { alert('发送失败：' + err.message); });
+}
+
+function loadStaffSentHistory() {
+  if (!currentUser) return;
+  db.collection('staffMessages')
+    .where('sender', '==', currentAccount.name)
+    .get().then(function (snap) {
+      var el = document.getElementById('staffSentHistory');
+      if (!el) return;
+      if (snap.empty) { el.innerHTML = '<div class="empty">暂无发送记录</div>'; return; }
+      var list = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+      list.sort(function (a, b) {
+        var ta = a.createTime && a.createTime.toDate ? a.createTime.toDate().getTime() : 0;
+        var tb = b.createTime && b.createTime.toDate ? b.createTime.toDate().getTime() : 0;
+        return tb - ta;
+      });
+      var html = '';
+      list.slice(0, 20).forEach(function (m) {
+        var timeStr = m.createTime && m.createTime.toDate
+          ? m.createTime.toDate().toLocaleString('zh-CN') : '';
+        html +=
+          '<div class="card" style="margin-bottom:10px;">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
+          '<span style="font-weight:bold;color:#34a853;">📤 已发送给管理员</span>' +
+          '<span style="font-size:12px;color:#999;">' + timeStr + '</span>' +
+          '</div>' +
+          '<div style="font-size:15px;color:#333;">' + esc(m.content) + '</div>' +
+          '</div>';
+      });
+      el.innerHTML = html;
+    });
+}
+
+// ============================================================
+// 管理员端：实时监听员工消息
+// ============================================================
+function startAdminMsgListener() {
+  db.collection('staffMessages')
+    .orderBy('createTime', 'desc')
+    .limit(1)
+    .onSnapshot(function (snap) {
+      if (snap.empty) return;
+      var doc   = snap.docs[0];
+      var msg   = doc.data();
+      var msgId = doc.id;
+      if (msgId === lastStaffMsgId) return;
+      lastStaffMsgId = msgId;
+      localStorage.setItem('lastStaffMsgId', msgId);
+      var dot = document.getElementById('staffMsgDot');
+      if (dot) dot.style.display = 'inline-block';
+      document.getElementById('staffMsgContent').textContent =
+        '【' + (msg.sender||'员工') + '】：' + msg.content;
+      var timeStr = msg.createTime && msg.createTime.toDate
+        ? msg.createTime.toDate().toLocaleString('zh-CN')
+        : new Date().toLocaleString('zh-CN');
+      document.getElementById('staffMsgTime').textContent = '发送时间：' + timeStr;
+      document.getElementById('staffMsgPopup').classList.add('show');
+      db.collection('staffMessages').doc(doc.id).update({ isRead: true });
+    });
+}
+
+function closeStaffMsg() {
+  document.getElementById('staffMsgPopup').classList.remove('show');
+}
+
+function loadStaffMsgPanel() {
+  var dot = document.getElementById('staffMsgDot');
+  if (dot) dot.style.display = 'none';
+  db.collection('staffMessages')
+    .get().then(function (snap) {
+      var el = document.getElementById('ap-staffmsg');
+      if (!el) return;
+      if (snap.empty) {
+        el.innerHTML = '<div class="sec-title">员工上报消息</div><div class="empty">暂无员工消息</div>';
+        return;
+      }
+      var list = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+      list.sort(function (a, b) {
+        var ta = a.createTime && a.createTime.toDate ? a.createTime.toDate().getTime() : 0;
+        var tb = b.createTime && b.createTime.toDate ? b.createTime.toDate().getTime() : 0;
+        return tb - ta;
+      });
+      var html = '<div class="sec-title">员工上报消息（共 ' + list.length + ' 条）</div>';
+      list.slice(0, 50).forEach(function (m) {
+        var timeStr = m.createTime && m.createTime.toDate
+          ? m.createTime.toDate().toLocaleString('zh-CN') : '-';
+        html +=
+          '<div class="card" style="margin-bottom:10px;' +
+          (!m.isRead ? 'border-left:3px solid #34a853;' : '') + '">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
+          '<span style="font-weight:bold;color:#34a853;">📨 ' + esc(m.sender||'员工') + '</span>' +
+          '<span style="font-size:12px;color:#999;">' + timeStr + '</span>' +
+          '</div>' +
+          '<div style="font-size:15px;color:#333;margin-bottom:4px;">' + esc(m.content) + '</div>' +
+          (!m.isRead
+            ? '<span style="font-size:12px;color:#ff4d4f;">● 未读</span>'
+            : '<span style="font-size:12px;color:#aaa;">已读</span>') +
+          '</div>';
+      });
+      el.innerHTML = html;
+      list.forEach(function (m) {
+        if (!m.isRead) {
+          db.collection('staffMessages').doc(m.id).update({ isRead: true });
+        }
+      });
+    });
+}
+
+// ============================================================
+// 员工端：监听管理员消息
 // ============================================================
 function startMsgListener() {
-  // 员工端实时监听消息
-  if (currentAccount.role === 'staff') {
-    msgListener = db.collection('messages')
-      .orderBy('createTime','desc')
-      .limit(1)
-      .onSnapshot(function(snap) {
-        if (snap.empty) return;
-        var doc  = snap.docs[0];
-        var msg  = doc.data();
-        var msgId = doc.id;
-        // 判断是否是新消息、是否是发给自己的
-        if (msgId === lastMsgId) return;
-        if (msg.target !== '全体' && msg.target !== currentAccount.name) return;
-        lastMsgId = msgId;
-        localStorage.setItem('lastMsgId', msgId);
-        showMsgPopup(msg.content, msg.createTime);
-      });
-  }
-}
-
-function showMsgPopup(content, time) {
-  document.getElementById('msgContent').textContent = content;
-  var timeStr = time && time.toDate
-    ? time.toDate().toLocaleString('zh-CN')
-    : new Date().toLocaleString('zh-CN');
-  document.getElementById('msgTime').textContent = '发送时间：' + timeStr;
-  document.getElementById('msgPopup').classList.add('show');
+  db.collection('messages')
+    .orderBy('createTime', 'desc')
+    .limit(1)
+    .onSnapshot(function (snap) {
+      if (snap.empty) return;
+      var doc   = snap.docs[0];
+      var msg   = doc.data();
+      var msgId = doc.id;
+      if (msgId === lastMsgId) return;
+      if (msg.target !== '全体' && msg.target !== currentAccount.name) return;
+      lastMsgId = msgId;
+      localStorage.setItem('lastMsgId', msgId);
+      document.getElementById('msgContent').textContent = msg.content;
+      var timeStr = msg.createTime && msg.createTime.toDate
+        ? msg.createTime.toDate().toLocaleString('zh-CN')
+        : new Date().toLocaleString('zh-CN');
+      document.getElementById('msgTime').textContent = '发送时间：' + timeStr;
+      document.getElementById('msgPopup').classList.add('show');
+    });
 }
 
 function closeMsg() {
@@ -805,171 +1159,243 @@ function closeMsg() {
 }
 
 // ============================================================
-// 管理后台
+// 管理后台数据
 // ============================================================
-function verifyAdmin() {
-  var pwd = document.getElementById('adminPwd').value;
-  if (pwd === ADMIN_PWD) {
-    localStorage.setItem('adminVerified','yes');
-    document.getElementById('adminLogin').style.display = 'none';
-    document.getElementById('adminPanel').style.display = 'block';
-    loadAdminData();
-  } else {
-    alert('密码错误');
-  }
-}
-
-function logoutAdmin() {
-  localStorage.removeItem('adminVerified');
-  document.getElementById('adminLogin').style.display = 'block';
-  document.getElementById('adminPanel').style.display = 'none';
-  document.getElementById('adminPwd').value = '';
-}
-
-function switchAdminTab(tab) {
-  ['overview','customers','goals','employee','message'].forEach(function(t) {
-    document.getElementById('ap-' + t).style.display = t === tab ? 'block' : 'none';
-    document.getElementById('at-' + t).classList.toggle('active', t === tab);
-  });
-  if (tab === 'message') renderMsgPanel();
-}
-
 function loadAdminData() {
-  var month = new Date().toISOString().slice(0,7);
+  if (!currentUser || currentAccount.role !== 'admin') return;
+  var month = new Date().toISOString().slice(0, 7);
+  var today = new Date().toISOString().slice(0, 10);
 
-  db.collection('customers').orderBy('createTime','desc').get()
-    .then(function(snap) {
-      var customers = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
-      var total  = customers.length;
-      var deal   = customers.filter(function(c){ return c.status==='deal'; }).length;
-      var intent = customers.filter(function(c){ return c.status==='intent'; }).length;
-
-      // 按员工姓名聚合
-      var empMap = {};
-      customers.forEach(function(c) {
-        var name = c.userName || c.uid.slice(0,8);
-        if (!empMap[name]) {
-          empMap[name] = {name:name, total:0, deal:0, intent:0, follow:0, lost:0};
-        }
-        empMap[name].total++;
-        empMap[name][c.status] = (empMap[name][c.status]||0) + 1;
-      });
-
-      // 总览
-      document.getElementById('ap-overview').innerHTML =
-        '<div class="sec-title">整体数据（' + month + '）</div>' +
-        '<div class="stats-grid">' +
-        '<div class="stat-card blue"><div class="num">' + total + '</div><div class="desc">总客户数</div></div>' +
-        '<div class="stat-card green"><div class="num">' + deal + '</div><div class="desc">已成交</div></div>' +
-        '<div class="stat-card orange"><div class="num">' + intent + '</div><div class="desc">意向客户</div></div>' +
-        '<div class="stat-card purple" id="salesCard"><div class="num">¥0</div><div class="desc">本月总销售额</div></div>' +
-        '</div>';
-
-      // 客户列表（带员工姓名）
-      var cHtml = '<div class="sec-title">全员客户（共 ' + total + ' 条）</div>' +
-        '<div class="table-wrap"><table><thead><tr>' +
-        '<th>姓名</th><th>电话</th><th>状态</th><th>意向金额</th><th>员工</th>' +
-        '</tr></thead><tbody>';
-      customers.forEach(function(c) {
-        cHtml +=
-          '<tr>' +
-          '<td><b>' + c.name + '</b></td>' +
-          '<td>' + c.phone + '</td>' +
-          '<td><span class="tag tag-' + c.status + '">' + (statusLabel[c.status]||'') + '</span></td>' +
-          '<td>' + (c.intentAmount ? '¥'+c.intentAmount : '-') + '</td>' +
-          '<td><b>' + (c.userName||'-') + '</b></td>' +
-          '</tr>';
-      });
-      cHtml += '</tbody></table></div>';
-      if (customers.length === 0) cHtml += '<div class="empty">暂无客户数据</div>';
-      document.getElementById('ap-customers').innerHTML = cHtml;
-
-      // 员工分布（显示真实姓名）
-      var empList = Object.values(empMap);
-      var eHtml = '<div class="sec-title">员工客户分布（共 ' + empList.length + ' 人）</div>';
-      empList.forEach(function(e) {
-        eHtml +=
-          '<div class="card" style="margin-bottom:12px;">' +
-          '<div style="font-size:16px;font-weight:bold;color:#222;margin-bottom:12px;">👤 ' + e.name + '</div>' +
-          '<div class="emp-row">' +
-          '<div class="emp-item"><span class="emp-num">'        + e.total  + '</span><span class="emp-lbl">总客户</span></div>' +
-          '<div class="emp-item"><span class="emp-num green">'  + e.deal   + '</span><span class="emp-lbl">已成交</span></div>' +
-          '<div class="emp-item"><span class="emp-num orange">' + e.intent + '</span><span class="emp-lbl">意向</span></div>' +
-          '<div class="emp-item"><span class="emp-num blue">'   + e.follow + '</span><span class="emp-lbl">跟进中</span></div>' +
-          '<div class="emp-item"><span class="emp-num red">'    + e.lost   + '</span><span class="emp-lbl">已流失</span></div>' +
-          '</div></div>';
-      });
-      if (empList.length === 0) eHtml += '<div class="empty">暂无员工数据</div>';
-      document.getElementById('ap-employee').innerHTML = eHtml;
+  db.collection('customers').get().then(function (snap) {
+    var customers = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+    customers.sort(function (a, b) {
+      var ta = a.createTime && a.createTime.toDate ? a.createTime.toDate().getTime() : 0;
+      var tb = b.createTime && b.createTime.toDate ? b.createTime.toDate().getTime() : 0;
+      return tb - ta;
+    });
+    var total  = customers.length;
+    var deal   = customers.filter(function (c) { return c.status === 'deal';   }).length;
+    var intent = customers.filter(function (c) { return c.status === 'intent'; }).length;
+    var empMap = {};
+    customers.forEach(function (c) {
+      var name = c.userName || '未知';
+      if (!empMap[name]) empMap[name] = { name:name, total:0, deal:0, intent:0, follow:0, lost:0 };
+      empMap[name].total++;
+      empMap[name][c.status] = (empMap[name][c.status] || 0) + 1;
     });
 
-  // 月度目标
-  db.collection('goals')
-    .where('type','==','monthly')
-    .where('month','==',month)
-    .get()
-    .then(function(snap) {
+    // 总览
+    document.getElementById('ap-overview').innerHTML =
+      '<div class="sec-title">整体数据（' + month + '）</div>' +
+      '<div class="stats-grid">' +
+      '<div class="stat-card blue"><div class="num">'   + total  + '</div><div class="desc">总客户数</div></div>' +
+      '<div class="stat-card green"><div class="num">'  + deal   + '</div><div class="desc">已成交</div></div>' +
+      '<div class="stat-card orange"><div class="num">' + intent + '</div><div class="desc">意向客户</div></div>' +
+      '<div class="stat-card purple" id="salesCard"><div class="num">¥0</div><div class="desc">本月总销售额</div></div>' +
+      '</div>';
+
+    // 客户列表
+    var cHtml = '<div class="sec-title">全员客户（共 ' + total + ' 条）</div>';
+    if (customers.length === 0) {
+      cHtml += '<div class="empty">暂无客户数据</div>';
+    } else {
+      customers.forEach(function (c) {
+        var timeStr = c.createTime && c.createTime.toDate
+          ? c.createTime.toDate().toLocaleString('zh-CN') : '-';
+        cHtml +=
+          '<div class="card" style="margin-bottom:10px;">' +
+          '<div class="c-header"><span class="c-name">' + esc(c.name) + '</span>' +
+          '<span class="tag tag-' + c.status + '">' + (statusLabel[c.status]||'') + '</span></div>' +
+          '<div class="c-info">📞 ' + esc(c.phone) + '</div>' +
+          '<div class="c-info">🏢 ' + esc(c.company||'-') + '</div>' +
+          '<div class="c-info" style="color:#1a73e8;">👤 员工：' + esc(c.userName||'-') + '</div>' +
+          '<div class="c-info">🕐 ' + timeStr + '</div>' +
+          '<div class="action-row">' +
+          '<button class="btn-sm btn-view-sm" onclick="viewAdminDetail(\'' + c.id + '\')">查看详情</button>' +
+          '<button class="btn-sm btn-del-sm"  onclick="adminDeleteCustomer(\'' + c.id + '\')">删除</button>' +
+          '</div></div>';
+      });
+    }
+    document.getElementById('ap-customers').innerHTML = cHtml;
+
+    // 员工分布
+    var empList = Object.values(empMap);
+    var eHtml   = '<div class="sec-title">员工客户分布</div>';
+    empList.forEach(function (e) {
+      eHtml +=
+        '<div class="card" style="margin-bottom:12px;">' +
+        '<div style="font-size:16px;font-weight:bold;margin-bottom:12px;">👤 ' + esc(e.name) + '</div>' +
+        '<div class="emp-row">' +
+        '<div class="emp-item"><span class="emp-num">'        + e.total  + '</span><span class="emp-lbl">总客户</span></div>' +
+        '<div class="emp-item"><span class="emp-num green">'  + e.deal   + '</span><span class="emp-lbl">已成交</span></div>' +
+        '<div class="emp-item"><span class="emp-num orange">' + e.intent + '</span><span class="emp-lbl">意向</span></div>' +
+        '<div class="emp-item"><span class="emp-num blue">'   + e.follow + '</span><span class="emp-lbl">跟进中</span></div>' +
+        '<div class="emp-item"><span class="emp-num red">'    + e.lost   + '</span><span class="emp-lbl">已流失</span></div>' +
+        '</div></div>';
+    });
+    if (empList.length === 0) eHtml += '<div class="empty">暂无员工数据</div>';
+    document.getElementById('ap-employee').innerHTML = eHtml;
+  });
+
+  // 目标面板
+  db.collection('goals').where('type','==','monthly').where('month','==',month)
+    .get().then(function (mSnap) {
       var totalSales = 0;
-      var gHtml = '<div class="sec-title">本月（' + month + '）目标完成情况</div>';
-      if (snap.empty) {
+      var gHtml = '<div class="sec-title">本月月度目标</div>';
+      if (mSnap.empty) {
         gHtml += '<div class="empty">暂无月度目标数据</div>';
       } else {
-        snap.docs.forEach(function(d) {
+        mSnap.docs.forEach(function (d) {
           var g   = d.data();
           totalSales += g.salesDone || 0;
           var pct = g.salesTarget > 0
-            ? Math.min(Math.round(g.salesDone/g.salesTarget*100),100) : 0;
+            ? Math.min(Math.round(g.salesDone / g.salesTarget * 100), 100) : 0;
           gHtml +=
             '<div class="card" style="margin-bottom:12px;">' +
-            '<div style="font-size:15px;font-weight:bold;color:#222;margin-bottom:10px;">👤 ' + (g.userName||'-') + '</div>' +
+            '<div style="font-size:15px;font-weight:bold;margin-bottom:10px;">👤 ' + esc(g.userName||'-') + '</div>' +
             '<div class="goal-cols">' +
             '<div class="goal-col"><span class="gcnum">¥' + (g.salesTarget||0) + '</span><span class="gclbl">目标额</span></div>' +
-            '<div class="goal-col"><span class="gcnum green">¥' + (g.salesDone||0) + '</span><span class="gclbl">已完成</span></div>' +
-            '<div class="goal-col"><span class="gcnum red">¥' + (g.salesUnfinished||0) + '</span><span class="gclbl">未达成</span></div>' +
+            '<div class="goal-col"><span class="gcnum" style="color:#34a853;">¥' + (g.salesDone||0) + '</span><span class="gclbl">已完成</span></div>' +
+            '<div class="goal-col"><span class="gcnum" style="color:#ff4d4f;">¥' + (g.salesUnfinished||0) + '</span><span class="gclbl">未达成</span></div>' +
             '</div>' +
             '<div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
             '<div class="ppct">完成率：' + pct + '%</div>' +
-            '</div>';
+            '<div class="action-row">' +
+            '<button class="btn-sm btn-del-sm" onclick="adminDeleteGoal(\'' + d.id + '\',\'月度计划\')">删除此计划</button>' +
+            '</div></div>';
         });
       }
-      document.getElementById('ap-goals').innerHTML = gHtml;
-      var sc = document.getElementById('salesCard');
-      if (sc) sc.querySelector('.num').textContent = '¥' + totalSales;
+      db.collection('goals').where('type','==','daily').where('date','==',today)
+        .get().then(function (dSnap) {
+          var dgHtml = '<div class="sec-title" style="margin-top:16px;">今日日计划</div>';
+          if (dSnap.empty) {
+            dgHtml += '<div class="empty">暂无员工今日日计划</div>';
+          } else {
+            dSnap.docs.forEach(function (d) {
+              var g = d.data();
+              dgHtml +=
+                '<div class="card" style="margin-bottom:10px;">' +
+                '<div style="font-size:15px;font-weight:bold;margin-bottom:8px;">👤 ' + esc(g.userName||'-') + '</div>' +
+                '<div class="emp-row">' +
+                '<div class="emp-item"><span class="emp-num blue">'   + (g.newCustomers||0)    + '</span><span class="emp-lbl">新增目标</span></div>' +
+                '<div class="emp-item"><span class="emp-num">'        + (g.calls||0)           + '</span><span class="emp-lbl">电话目标</span></div>' +
+                '<div class="emp-item"><span class="emp-num orange">' + (g.intentCustomers||0) + '</span><span class="emp-lbl">意向目标</span></div>' +
+                '</div>' +
+                '<div class="action-row">' +
+                '<button class="btn-sm btn-del-sm" onclick="adminDeleteGoal(\'' + d.id + '\',\'日计划\')">删除此计划</button>' +
+                '</div></div>';
+            });
+          }
+          document.getElementById('ap-goals').innerHTML = gHtml + dgHtml;
+          var sc = document.getElementById('salesCard');
+          if (sc) sc.querySelector('.num').textContent = '¥' + totalSales;
+        });
     });
 }
 
-// ============================================================
-// 消息发送面板
-// ============================================================
-var msgTarget = '全体';
+function viewAdminDetail(id) {
+  db.collection('customers').doc(id).get().then(function (doc) {
+    if (!doc.exists) { alert('客户不存在'); return; }
+    var c       = Object.assign({ id: doc.id }, doc.data());
+    var timeStr = c.createTime && c.createTime.toDate
+      ? c.createTime.toDate().toLocaleString('zh-CN') : '-';
+    document.getElementById('detailContent').innerHTML =
+      row('姓名',     c.name)    + row('手机号',   c.phone)    +
+      row('公司',     c.company) + row('职位',     c.position) +
+      row('来源渠道', c.source)  +
+      row('意向金额', c.intentAmount ? '¥' + c.intentAmount : '-') +
+      '<div class="detail-row"><span class="detail-label">客户状态</span><span class="detail-value">' +
+      '<span class="tag tag-' + c.status + '">' + (statusLabel[c.status]||'-') + '</span></span></div>' +
+      row('备注',     c.remark)  +
+      row('所属员工', c.userName) +
+      row('添加时间', timeStr);
+    document.getElementById('detailOverlay').classList.add('show');
+    document.getElementById('detailBox').style.display = 'block';
+  });
+}
 
+function adminDeleteGoal(id, label) {
+  if (!confirm('确认删除该员工的' + label + '？')) return;
+  db.collection('goals').doc(id).delete().then(function () {
+    showToast(label + '已删除'); loadAdminData();
+  }).catch(function (err) { alert('删除失败：' + err.message); });
+}
+
+// ============================================================
+// 管理端子 Tab 切换
+// ============================================================
+function switchAdminTab(tab) {
+  ['overview','customers','goals','employee','accounts','staffmsg','message'].forEach(function (t) {
+    document.getElementById('ap-' + t).style.display = t === tab ? 'block' : 'none';
+    document.getElementById('at-' + t).classList.toggle('active', t === tab);
+  });
+  if (tab === 'message')  renderMsgPanel();
+  if (tab === 'accounts') loadAccountsPanel();
+  if (tab === 'staffmsg') loadStaffMsgPanel();
+}
+
+// ============================================================
+// 管理端账户面板
+// ============================================================
+function loadAccountsPanel() {
+  db.collection('accounts').get().then(function (snap) {
+    var html = '<div class="sec-title">员工账户信息</div>';
+    if (snap.empty) {
+      html += '<div class="empty">暂无账户数据</div>';
+    } else {
+      snap.docs.forEach(function (doc) {
+        var a = doc.data();
+        if (a.role === 'admin') return;
+        html +=
+          '<div class="card" style="margin-bottom:10px;">' +
+          '<div style="font-size:16px;font-weight:bold;margin-bottom:10px;">👤 ' + esc(a.name||doc.id) + '</div>' +
+          '<div class="c-info">🔑 账号：<b>' + esc(doc.id)          + '</b></div>' +
+          '<div class="c-info">🔒 密码：<b>' + esc(a.password||'-') + '</b></div>' +
+          '<div class="c-info">📋 角色：'    + (a.role === 'staff' ? '员工' : a.role) + '</div>' +
+          '</div>';
+      });
+    }
+    document.getElementById('ap-accounts').innerHTML = html;
+  });
+}
+
+// ============================================================
+// 管理端发消息给员工
+// ============================================================
 function renderMsgPanel() {
-  document.getElementById('ap-message').innerHTML =
-    '<div class="sec-title">📢 发送消息给员工</div>' +
-    '<div class="msg-send-box">' +
-    '<div class="msg-send-title">选择发送对象</div>' +
-    '<div class="msg-target">' +
-    '<div class="msg-target-btn active" id="mt-全体"   onclick="setMsgTarget(\'全体\')">全体员工</div>' +
-    '<div class="msg-target-btn"        id="mt-王凯"   onclick="setMsgTarget(\'王凯\')">王凯</div>' +
-    '<div class="msg-target-btn"        id="mt-朱红"   onclick="setMsgTarget(\'朱红\')">朱红</div>' +
-    '</div>' +
-    '<div class="form-group">' +
-    '<label class="form-label">消息内容</label>' +
-    '<textarea class="form-textarea" id="msgInput" placeholder="请输入要发送的消息..." style="min-height:100px;"></textarea>' +
-    '</div>' +
-    '<button class="btn btn-primary" onclick="sendMessage()">📤 立即发送</button>' +
-    '</div>' +
-    '<div class="sec-title" style="margin-top:16px;">历史消息记录</div>' +
-    '<div id="msgHistory"><div class="empty">加载中...</div></div>';
-  loadMsgHistory();
+  db.collection('accounts').get().then(function (snap) {
+    var staffBtns = '<div class="msg-target-btn active" id="mt-全体" onclick="setMsgTarget(\'全体\')">全体员工</div>';
+    snap.docs.forEach(function (doc) {
+      var a = doc.data();
+      if (a.role === 'staff') {
+        staffBtns +=
+          '<div class="msg-target-btn" id="mt-' + esc(a.name) +
+          '" onclick="setMsgTarget(\'' + esc(a.name) + '\')">' + esc(a.name) + '</div>';
+      }
+    });
+    document.getElementById('ap-message').innerHTML =
+      '<div class="sec-title">📢 发送消息给员工</div>' +
+      '<div class="msg-send-box">' +
+      '<div class="msg-send-title">选择发送对象</div>' +
+      '<div class="msg-target">' + staffBtns + '</div>' +
+      '<div class="form-group">' +
+      '<label class="form-label">消息内容</label>' +
+      '<textarea class="form-textarea" id="msgInput" placeholder="请输入消息内容..." style="min-height:100px;"></textarea>' +
+      '</div>' +
+      '<button class="btn btn-primary" onclick="sendMessage()">📤 立即发送</button>' +
+      '</div>' +
+      '<div class="sec-title" style="margin-top:16px;">历史发送记录</div>' +
+      '<div id="msgHistory"><div class="empty">加载中...</div></div>';
+    msgTarget = '全体';
+    loadMsgHistory();
+  });
 }
 
 function setMsgTarget(target) {
   msgTarget = target;
-  document.querySelectorAll('.msg-target-btn').forEach(function(btn){
-    btn.classList.remove('active');
-  });
-  document.getElementById('mt-' + target).classList.add('active');
+  document.querySelectorAll('.msg-target-btn').forEach(function (btn) { btn.classList.remove('active'); });
+  var el = document.getElementById('mt-' + target);
+  if (el) el.classList.add('active');
 }
 
 function sendMessage() {
@@ -980,58 +1406,75 @@ function sendMessage() {
     target:     msgTarget,
     sender:     currentAccount.name,
     createTime: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(function() {
+  }).then(function () {
     showToast('消息发送成功');
     document.getElementById('msgInput').value = '';
     loadMsgHistory();
-  }).catch(function(err){ alert('发送失败：' + err.message); });
+  }).catch(function (err) { alert('发送失败：' + err.message); });
 }
 
 function loadMsgHistory() {
-  db.collection('messages')
-    .orderBy('createTime','desc')
-    .limit(20)
-    .get()
-    .then(function(snap) {
-      var el = document.getElementById('msgHistory');
-      if (!el) return;
-      if (snap.empty) {
-        el.innerHTML = '<div class="empty">暂无消息记录</div>';
-        return;
-      }
-      var html = '';
-      snap.docs.forEach(function(d) {
-        var m       = d.data();
-        var timeStr = m.createTime && m.createTime.toDate
-          ? m.createTime.toDate().toLocaleString('zh-CN')
-          : '';
-        html +=
-          '<div class="card" style="margin-bottom:10px;">' +
-          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
-          '<span style="font-weight:bold;color:#1a73e8;">📢 发给：' + (m.target||'全体') + '</span>' +
-          '<span style="font-size:12px;color:#999;">' + timeStr + '</span>' +
-          '</div>' +
-          '<div style="font-size:15px;color:#333;margin-bottom:6px;">' + m.content + '</div>' +
-          '<div style="font-size:12px;color:#aaa;">发送人：' + (m.sender||'管理员') + '</div>' +
-          '</div>';
-      });
-      el.innerHTML = html;
+  db.collection('messages').get().then(function (snap) {
+    var el = document.getElementById('msgHistory');
+    if (!el) return;
+    if (snap.empty) { el.innerHTML = '<div class="empty">暂无发送记录</div>'; return; }
+    var list = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+    list.sort(function (a, b) {
+      var ta = a.createTime && a.createTime.toDate ? a.createTime.toDate().getTime() : 0;
+      var tb = b.createTime && b.createTime.toDate ? b.createTime.toDate().getTime() : 0;
+      return tb - ta;
     });
+    var html = '';
+    list.slice(0, 20).forEach(function (m) {
+      var timeStr = m.createTime && m.createTime.toDate
+        ? m.createTime.toDate().toLocaleString('zh-CN') : '';
+      html +=
+        '<div class="card" style="margin-bottom:10px;">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
+        '<span style="font-weight:bold;color:#1a73e8;">📢 发给：' + esc(m.target||'全体') + '</span>' +
+        '<span style="font-size:12px;color:#999;">' + timeStr + '</span>' +
+        '</div>' +
+        '<div style="font-size:15px;color:#333;margin-bottom:6px;">' + esc(m.content) + '</div>' +
+        '<div style="font-size:12px;color:#aaa;">发送人：' + esc(m.sender||'管理员') + '</div>' +
+        '</div>';
+    });
+    el.innerHTML = html;
+  });
 }
 
 // ============================================================
 // 工具函数
 // ============================================================
+function esc(str) {
+  if (str === null || str === undefined)
+    return '-';
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+function row(label, val) {
+  return '<div class="detail-row">' +
+    '<span class="detail-label">' + label + '</span>' +
+    '<span class="detail-value">' + esc(val) + '</span>' +
+    '</div>';
+}
+
 function showToast(msg) {
   var old = document.querySelector('.toast');
   if (old) old.remove();
-  var toast       = document.createElement('div');
+  var toast         = document.createElement('div');
   toast.className   = 'toast';
   toast.textContent = msg;
   document.body.appendChild(toast);
-  setTimeout(function(){ if(toast.parentNode) toast.remove(); }, 2000);
+  setTimeout(function () {
+    if (toast.parentNode) toast.remove();
+  }, 2000);
 }
 </script>
-
 </body>
 </html>
+
+
