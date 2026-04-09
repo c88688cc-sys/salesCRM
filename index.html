@@ -4,37 +4,34 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
   <meta name="apple-mobile-web-app-title" content="销售CRM"/>
   <title>销售CRM系统</title>
-  <link rel="manifest" href="manifest.json"/>
-
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-
   <style>
     *{margin:0;padding:0;box-sizing:border-box;}
-    body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif;background:#f5f6fa;max-width:480px;margin:0 auto;}
+    body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif;background:#f5f6fa;max-width:480px;margin:0 auto;min-height:100vh;}
     .header{background:linear-gradient(135deg,#1a73e8,#0d47a1);color:#fff;padding:50px 20px 20px;text-align:center;}
     .header h1{font-size:20px;}
     .header p{font-size:13px;opacity:0.8;margin-top:4px;}
     .tab-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;display:flex;border-top:1px solid #eee;z-index:100;}
-    .tab-item{flex:1;text-align:center;padding:10px 0;font-size:12px;color:#999;cursor:pointer;}
+    .tab-item{flex:1;text-align:center;padding:10px 0;font-size:12px;color:#999;cursor:pointer;-webkit-tap-highlight-color:transparent;}
     .tab-item.active{color:#1a73e8;}
     .tab-icon{font-size:22px;display:block;}
-    .page{display:none;padding:16px;padding-bottom:80px;}
+    .page{display:none;padding:16px;padding-bottom:80px;min-height:calc(100vh - 120px);}
     .page.active{display:block;}
     .card{background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
-    .btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;font-size:16px;cursor:pointer;text-align:center;}
+    .btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;font-size:16px;cursor:pointer;text-align:center;-webkit-tap-highlight-color:transparent;}
     .btn-primary{background:#1a73e8;color:#fff;}
-    .btn-gray{background:#f0f0f0;color:#666;}
-    .btn-sm{padding:6px 14px;border:none;border-radius:6px;font-size:13px;cursor:pointer;}
+    .btn-primary:active{background:#1557b0;}
+    .btn-gray{background:#f0f0f0;color:#666;margin-top:10px;}
+    .btn-sm{padding:8px 16px;border:none;border-radius:6px;font-size:13px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
     .btn-edit-sm{background:#e8f0fe;color:#1a73e8;}
     .btn-del-sm{background:#fff0f0;color:#ff4d4f;}
     .form-group{margin-bottom:14px;}
     .form-label{font-size:13px;color:#555;display:block;margin-bottom:6px;}
-    .form-input,.form-select,.form-textarea{width:100%;padding:12px;border:1px solid #e8e8e8;border-radius:8px;font-size:15px;background:#fafafa;outline:none;}
+    .form-input,.form-select,.form-textarea{width:100%;padding:12px;border:1px solid #e8e8e8;border-radius:8px;font-size:15px;background:#fafafa;outline:none;-webkit-appearance:none;}
     .form-textarea{min-height:80px;resize:none;}
     .form-input:focus,.form-textarea:focus{border-color:#1a73e8;background:#fff;}
     .tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;}
@@ -42,16 +39,16 @@
     .tag-intent{background:#fff3cd;color:#856404;}
     .tag-deal{background:#d4edda;color:#155724;}
     .tag-lost{background:#f8d7da;color:#721c24;}
-    .modal-mask{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:200;}
-    .modal-mask.show{display:block;}
+    .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:200;}
+    .modal-overlay.show{display:block;}
     .modal-box{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-radius:20px 20px 0 0;padding:20px;max-height:90vh;overflow-y:auto;z-index:201;}
     .modal-title{font-size:18px;font-weight:bold;text-align:center;margin-bottom:20px;color:#222;}
-    .stat-row{display:flex;justify-content:space-around;text-align:center;}
-    .stat-num{font-size:36px;font-weight:bold;color:#1a73e8;display:block;}
+    .stat-row{display:flex;justify-content:space-around;text-align:center;padding:8px 0;}
+    .stat-num{font-size:32px;font-weight:bold;color:#1a73e8;display:block;}
     .stat-label{font-size:12px;color:#888;margin-top:4px;display:block;}
     .progress-bar{background:#e8f0fe;border-radius:8px;height:12px;overflow:hidden;margin:10px 0;}
-    .progress-fill{height:100%;background:#1a73e8;border-radius:8px;transition:width 0.5s ease;}
-    .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .progress-fill{height:100%;background:#1a73e8;border-radius:8px;transition:width 0.5s;}
+    .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
     .stat-card{border-radius:12px;padding:16px;text-align:center;}
     .stat-card.blue{background:#e8f0fe;}
     .stat-card.green{background:#e6f4ea;}
@@ -59,55 +56,110 @@
     .stat-card.purple{background:#f3e8fd;}
     .stat-card .num{font-size:28px;font-weight:bold;color:#222;}
     .stat-card .desc{font-size:12px;color:#666;margin-top:4px;}
-    .customer-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-    .customer-name{font-size:17px;font-weight:bold;color:#222;}
-    .customer-info{font-size:13px;color:#666;margin-bottom:4px;}
+    .c-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+    .c-name{font-size:17px;font-weight:bold;color:#222;}
+    .c-info{font-size:13px;color:#666;margin-bottom:4px;}
     .action-row{display:flex;gap:8px;margin-top:12px;}
-    .search-box{display:flex;align-items:center;background:#fff;border-radius:10px;padding:10px 14px;margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
-    .search-box input{border:none;outline:none;font-size:15px;flex:1;background:transparent;}
-    .login-card{text-align:center;padding:40px 20px;}
-    .login-icon{font-size:60px;margin-bottom:16px;}
-    .login-title{font-size:22px;font-weight:bold;margin-bottom:8px;}
-    .login-sub{font-size:14px;color:#999;margin-bottom:30px;}
-    .section-title{font-size:16px;font-weight:bold;color:#333;margin-bottom:12px;padding-left:10px;border-left:4px solid #1a73e8;}
+    .search-wrap{display:flex;align-items:center;background:#fff;border-radius:10px;padding:10px 14px;margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
+    .search-wrap input{border:none;outline:none;font-size:15px;flex:1;background:transparent;}
+    .sec-title{font-size:16px;font-weight:bold;color:#333;margin-bottom:12px;padding-left:10px;border-left:4px solid #1a73e8;}
     .goal-preview{background:#f0f7ff;}
-    .goal-row{display:flex;justify-content:space-around;text-align:center;}
+    .goal-row{display:flex;justify-content:space-around;text-align:center;padding:8px 0;}
     .goal-item{display:flex;flex-direction:column;align-items:center;}
     .goal-num{font-size:36px;font-weight:bold;color:#1a73e8;}
     .goal-lbl{font-size:12px;color:#888;margin-top:4px;}
-    .empty{text-align:center;color:#bbb;padding:40px 0;font-size:14px;}
+    .empty{text-align:center;color:#bbb;padding:30px 0;font-size:14px;}
     .top-tab{display:flex;background:#fff;border-radius:10px;margin-bottom:14px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
-    .top-tab-item{flex:1;text-align:center;padding:12px 0;font-size:14px;color:#666;cursor:pointer;}
+    .top-tab-item{flex:1;text-align:center;padding:12px 0;font-size:14px;color:#666;cursor:pointer;-webkit-tap-highlight-color:transparent;}
     .top-tab-item.active{background:#1a73e8;color:#fff;font-weight:bold;}
-    .admin-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+    .admin-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
     .admin-title{font-size:18px;font-weight:bold;}
     .admin-btns{display:flex;gap:8px;}
     .sync-btn{background:#e8f0fe;color:#1a73e8;padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;}
     .out-btn{background:#fff0f0;color:#ff4d4f;padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;}
-    .progress-row{display:flex;justify-content:space-between;font-size:13px;color:#555;margin-bottom:6px;}
-    .progress-pct{text-align:right;font-size:13px;color:#1a73e8;font-weight:bold;margin-top:4px;}
+    .prow{display:flex;justify-content:space-between;font-size:13px;color:#555;margin-bottom:6px;}
+    .ppct{text-align:right;font-size:13px;color:#1a73e8;font-weight:bold;margin-top:4px;}
     .emp-id{font-size:11px;color:#bbb;margin-bottom:10px;}
-    .emp-stat-row{display:flex;justify-content:space-around;text-align:center;}
-    .emp-stat-item{display:flex;flex-direction:column;align-items:center;}
-    .emp-num{font-size:24px;font-weight:bold;}
+    .emp-row{display:flex;justify-content:space-around;text-align:center;}
+    .emp-item{display:flex;flex-direction:column;align-items:center;}
+    .emp-num{font-size:22px;font-weight:bold;}
     .emp-lbl{font-size:11px;color:#888;margin-top:2px;}
-    .green{color:#34a853;} .red{color:#ff4d4f;} .orange{color:#f5a623;} .blue{color:#1a73e8;}
+    .green{color:#34a853;}.red{color:#ff4d4f;}.orange{color:#f5a623;}.blue{color:#1a73e8;}
     .shortcut-grid{display:flex;justify-content:space-around;margin-top:4px;}
-    .shortcut-item{background:#fff;border-radius:12px;padding:16px 12px;text-align:center;width:30%;box-shadow:0 1px 6px rgba(0,0,0,0.06);cursor:pointer;}
+    .shortcut-item{background:#fff;border-radius:12px;padding:16px 12px;text-align:center;width:30%;box-shadow:0 1px 6px rgba(0,0,0,0.06);cursor:pointer;-webkit-tap-highlight-color:transparent;}
     .shortcut-icon{font-size:30px;margin-bottom:6px;}
     .shortcut-item span{font-size:13px;color:#333;}
     .welcome-card{background:linear-gradient(135deg,#1a73e8,#0d47a1);color:#fff;border-radius:12px;padding:20px;margin-bottom:12px;}
     .welcome-name{font-size:20px;font-weight:bold;}
     .welcome-date{font-size:13px;opacity:0.8;margin-top:4px;}
-    .goal-card{margin-bottom:12px;}
-    .goal-emp-row{display:flex;justify-content:space-between;margin-bottom:10px;}
     .goal-cols{display:flex;justify-content:space-around;text-align:center;margin-bottom:12px;}
     .goal-col{display:flex;flex-direction:column;align-items:center;}
-    .goal-col-num{font-size:22px;font-weight:bold;color:#1a73e8;}
-    .goal-col-lbl{font-size:11px;color:#888;margin-top:2px;}
+    .gcnum{font-size:22px;font-weight:bold;color:#1a73e8;}
+    .gclbl{font-size:11px;color:#888;margin-top:2px;}
+    .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.75);color:#fff;padding:10px 24px;border-radius:20px;font-size:14px;z-index:9999;pointer-events:none;}
+
+    /* 登录页 */
+    #loginPage{position:fixed;top:0;left:0;width:100%;height:100%;background:#f5f6fa;z-index:999;display:flex;align-items:center;justify-content:center;}
+    .login-box{background:#fff;border-radius:20px;padding:40px 30px;width:90%;max-width:400px;box-shadow:0 4px 20px rgba(0,0,0,0.1);text-align:center;}
+    .login-logo{font-size:60px;margin-bottom:16px;}
+    .login-app-title{font-size:22px;font-weight:bold;color:#222;margin-bottom:6px;}
+    .login-sub{font-size:14px;color:#999;margin-bottom:30px;}
+    .login-box .form-group{text-align:left;}
+    .login-error{color:#ff4d4f;font-size:13px;margin-top:10px;display:none;}
+
+    /* 客户表格 */
+    .table-wrap{overflow-x:auto;margin-bottom:12px;}
+    table{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:12px;overflow:hidden;}
+    th{background:#1a73e8;color:#fff;padding:10px 8px;text-align:left;font-weight:normal;white-space:nowrap;}
+    td{padding:10px 8px;border-bottom:1px solid #f0f0f0;vertical-align:middle;}
+    tr:last-child td{border-bottom:none;}
+    tr:hover td{background:#f8f9ff;}
+
+    /* 消息通知弹窗 */
+    .msg-popup{display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);width:90%;max-width:400px;background:#fff;border-radius:16px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,0.2);z-index:9998;border-left:4px solid #1a73e8;}
+    .msg-popup.show{display:block;animation:slideDown 0.3s ease;}
+    @keyframes slideDown{from{top:0;opacity:0;}to{top:20px;opacity:1;}}
+    .msg-popup-title{font-size:16px;font-weight:bold;color:#1a73e8;margin-bottom:8px;}
+    .msg-popup-content{font-size:15px;color:#333;margin-bottom:16px;}
+    .msg-popup-time{font-size:12px;color:#999;margin-bottom:12px;}
+    .msg-popup-close{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:14px;cursor:pointer;width:100%;}
+
+    /* 消息发送面板 */
+    .msg-send-box{background:#f0f7ff;border-radius:12px;padding:16px;margin-bottom:12px;}
+    .msg-send-title{font-size:15px;font-weight:bold;color:#1a73e8;margin-bottom:12px;}
+    .msg-target{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+    .msg-target-btn{padding:6px 14px;border-radius:20px;border:1px solid #1a73e8;color:#1a73e8;font-size:13px;cursor:pointer;background:#fff;}
+    .msg-target-btn.active{background:#1a73e8;color:#fff;}
   </style>
 </head>
 <body>
+
+<!-- 登录页 -->
+<div id="loginPage">
+  <div class="login-box">
+    <div class="login-logo">📈</div>
+    <div class="login-app-title">销售CRM系统</div>
+    <div class="login-sub">请登录您的账号</div>
+    <div class="form-group">
+      <label class="form-label">用户名</label>
+      <input class="form-input" type="text" id="loginUser" placeholder="请输入用户名"/>
+    </div>
+    <div class="form-group" style="margin-top:12px;">
+      <label class="form-label">密码</label>
+      <input class="form-input" type="password" id="loginPwd" placeholder="请输入密码"/>
+    </div>
+    <div class="login-error" id="loginError">用户名或密码错误</div>
+    <button class="btn btn-primary" style="margin-top:20px;" onclick="doLogin()">登 录</button>
+  </div>
+</div>
+
+<!-- 消息弹窗 -->
+<div class="msg-popup" id="msgPopup">
+  <div class="msg-popup-title">📢 管理员消息</div>
+  <div class="msg-popup-content" id="msgContent"></div>
+  <div class="msg-popup-time" id="msgTime"></div>
+  <button class="msg-popup-close" onclick="closeMsg()">我知道了</button>
+</div>
 
 <div class="header">
   <h1>📈 销售CRM系统</h1>
@@ -117,38 +169,31 @@
 <!-- 首页 -->
 <div class="page active" id="page-home">
   <div class="welcome-card">
-    <div class="welcome-name">你好，<span id="homeUserName">员工</span> 👋</div>
+    <div class="welcome-name">你好，<span id="homeUser">员工</span> 👋</div>
     <div class="welcome-date" id="homeDate"></div>
   </div>
-  <div class="section-title">今日目标</div>
-  <div class="card" id="homeDailyCard">
-    <div class="empty">暂无今日计划，去"目标"页面设定</div>
-  </div>
-  <div class="section-title">本月销售进度</div>
-  <div class="card" id="homeMonthCard">
-    <div class="empty">暂无月度计划</div>
-  </div>
-  <div class="section-title">快捷操作</div>
+  <div class="sec-title">今日目标</div>
+  <div class="card" id="homeDailyCard"><div class="empty">暂无今日计划，去"目标"页面设定</div></div>
+  <div class="sec-title">本月销售进度</div>
+  <div class="card" id="homeMonthCard"><div class="empty">暂无月度计划</div></div>
+  <div class="sec-title">快捷操作</div>
   <div class="shortcut-grid">
-    <div class="shortcut-item" onclick="switchTab('customer')">
-      <div class="shortcut-icon">👥</div><span>添加客户</span>
-    </div>
-    <div class="shortcut-item" onclick="switchTab('goal')">
-      <div class="shortcut-icon">🎯</div><span>设定目标</span>
-    </div>
-    <div class="shortcut-item" onclick="switchTab('admin')">
-      <div class="shortcut-icon">📊</div><span>数据看板</span>
-    </div>
+    <div class="shortcut-item" onclick="switchTab('customer')"><div class="shortcut-icon">👥</div><span>添加客户</span></div>
+    <div class="shortcut-item" onclick="switchTab('goal')"><div class="shortcut-icon">🎯</div><span>设定目标</span></div>
+    <div class="shortcut-item" onclick="switchTab('admin')"><div class="shortcut-icon">📊</div><span>数据看板</span></div>
   </div>
 </div>
 
 <!-- 客户页 -->
 <div class="page" id="page-customer">
-  <div class="search-box">
+  <div class="search-wrap">
     <span>🔍</span>
     <input type="text" id="searchInput" placeholder="搜索姓名/电话/公司" oninput="searchCustomers()"/>
   </div>
-  <button class="btn btn-primary" onclick="showCustomerForm()" style="margin-bottom:12px;">+ 添加客户</button>
+  <button class="btn btn-primary" onclick="showAddForm()" style="margin-bottom:12px;">+ 添加客户</button>
+  <!-- 客户表格 -->
+  <div class="table-wrap" id="customerTable"></div>
+  <!-- 客户卡片列表 -->
   <div id="customerList"></div>
 </div>
 
@@ -159,11 +204,11 @@
     <div class="top-tab-item"        id="tab-monthly" onclick="switchGoalTab('monthly')">📆 月计划</div>
   </div>
   <div id="goalDaily">
-    <div class="section-title" id="dailyTitle">今日目标</div>
+    <div class="sec-title" id="dailyTitle">今日目标</div>
     <div class="card">
       <div class="form-group">
         <label class="form-label">👥 今日新增客户目标（人）</label>
-        <input class="form-input" type="number" id="d_newCustomers" placeholder="目标人数"/>
+        <input class="form-input" type="number" id="d_new" placeholder="目标人数"/>
       </div>
       <div class="form-group">
         <label class="form-label">📞 今日拨打电话目标（通）</label>
@@ -171,77 +216,56 @@
       </div>
       <div class="form-group">
         <label class="form-label">🔥 今日意向客户目标（人）</label>
-        <input class="form-input" type="number" id="d_intentCustomers" placeholder="意向客户数"/>
+        <input class="form-input" type="number" id="d_intent" placeholder="意向客户数"/>
       </div>
       <button class="btn btn-primary" onclick="saveDailyGoal()">保存今日计划</button>
     </div>
     <div class="card goal-preview" id="dailyPreview" style="display:none;">
-      <div class="section-title">今日计划一览</div>
+      <div class="sec-title">今日计划一览</div>
       <div class="goal-row">
-        <div class="goal-item">
-          <span class="goal-num" id="prev_new">0</span>
-          <span class="goal-lbl">新增客户</span>
-        </div>
-        <div class="goal-item">
-          <span class="goal-num" id="prev_calls">0</span>
-          <span class="goal-lbl">拨打电话</span>
-        </div>
-        <div class="goal-item">
-          <span class="goal-num" id="prev_intent">0</span>
-          <span class="goal-lbl">意向客户</span>
-        </div>
+        <div class="goal-item"><span class="goal-num" id="pv_new">0</span><span class="goal-lbl">新增客户</span></div>
+        <div class="goal-item"><span class="goal-num" id="pv_calls">0</span><span class="goal-lbl">拨打电话</span></div>
+        <div class="goal-item"><span class="goal-num" id="pv_intent">0</span><span class="goal-lbl">意向客户</span></div>
       </div>
     </div>
   </div>
   <div id="goalMonthly" style="display:none;">
-    <div class="section-title" id="monthlyTitle">月度目标</div>
+    <div class="sec-title" id="monthlyTitle">月度目标</div>
     <div class="card">
       <div class="form-group">
         <label class="form-label">🎯 本月销售目标（元）</label>
-        <input class="form-input" type="number" id="m_salesTarget" placeholder="目标金额" oninput="calcUnfinished()"/>
+        <input class="form-input" type="number" id="m_target" placeholder="目标金额" oninput="calcLeft()"/>
       </div>
       <div class="form-group">
         <label class="form-label">✅ 本月已达成（元）</label>
-        <input class="form-input" type="number" id="m_salesDone" placeholder="已完成金额" oninput="calcUnfinished()"/>
+        <input class="form-input" type="number" id="m_done" placeholder="已完成金额" oninput="calcLeft()"/>
       </div>
       <div class="form-group">
         <label class="form-label">⏳ 未达成金额（自动计算）</label>
-        <input class="form-input" type="number" id="m_salesUnfinished" readonly
-          style="color:#ff4d4f;background:#fff0f0;" placeholder="自动计算"/>
+        <input class="form-input" type="number" id="m_left" readonly style="color:#ff4d4f;background:#fff0f0;"/>
       </div>
       <button class="btn btn-primary" onclick="saveMonthlyGoal()">保存月度计划</button>
     </div>
     <div class="card" id="monthlyPreview" style="display:none;">
-      <div class="section-title">月度完成进度</div>
-      <div class="progress-row">
-        <span>目标：¥<span id="m_prev_target">0</span></span>
-        <span>已完成：¥<span id="m_prev_done">0</span></span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="m_progressFill" style="width:0%"></div>
-      </div>
-      <div class="progress-pct">
-        完成率：<span id="m_pct">0</span>%
-        &nbsp;&nbsp;
-        <span style="color:#ff4d4f;">未达成：¥<span id="m_prev_unfinished">0</span></span>
-      </div>
+      <div class="sec-title">月度完成进度</div>
+      <div class="prow"><span>目标：¥<span id="mp_target">0</span></span><span>已完成：¥<span id="mp_done">0</span></span></div>
+      <div class="progress-bar"><div class="progress-fill" id="mp_bar" style="width:0%"></div></div>
+      <div class="ppct">完成率：<span id="mp_pct">0</span>% &nbsp;<span style="color:#ff4d4f;">未达成：¥<span id="mp_left">0</span></span></div>
     </div>
   </div>
 </div>
 
 <!-- 管理页 -->
 <div class="page" id="page-admin">
-  <div id="adminLogin" class="card login-card">
-    <div class="login-icon">🔐</div>
-    <div class="login-title">管理员登录</div>
-    <div class="login-sub">请输入管理员密码进入后台</div>
-    <div class="form-group">
-      <input class="form-input" type="password" id="adminPwd" placeholder="请输入管理员密码"/>
-    </div>
+  <div id="adminLogin" class="card" style="text-align:center;padding:40px 20px;">
+    <div style="font-size:60px;margin-bottom:16px;">🔐</div>
+    <div style="font-size:22px;font-weight:bold;margin-bottom:8px;">管理员登录</div>
+    <div style="font-size:14px;color:#999;margin-bottom:30px;">请输入管理员密码进入后台</div>
+    <div class="form-group"><input class="form-input" type="password" id="adminPwd" placeholder="请输入管理员密码"/></div>
     <button class="btn btn-primary" onclick="verifyAdmin()">进入后台</button>
   </div>
   <div id="adminPanel" style="display:none;">
-    <div class="admin-header">
+    <div class="admin-hd">
       <div class="admin-title">📊 管理后台</div>
       <div class="admin-btns">
         <div class="sync-btn" onclick="loadAdminData()">🔄 同步</div>
@@ -249,64 +273,39 @@
       </div>
     </div>
     <div class="top-tab">
-      <div class="top-tab-item active" id="atab-overview"  onclick="switchAdminTab('overview')">总览</div>
-      <div class="top-tab-item"        id="atab-customers" onclick="switchAdminTab('customers')">客户</div>
-      <div class="top-tab-item"        id="atab-goals"     onclick="switchAdminTab('goals')">目标</div>
-      <div class="top-tab-item"        id="atab-employee"  onclick="switchAdminTab('employee')">员工</div>
+      <div class="top-tab-item active" id="at-overview"  onclick="switchAdminTab('overview')">总览</div>
+      <div class="top-tab-item"        id="at-customers" onclick="switchAdminTab('customers')">客户</div>
+      <div class="top-tab-item"        id="at-goals"     onclick="switchAdminTab('goals')">目标</div>
+      <div class="top-tab-item"        id="at-employee"  onclick="switchAdminTab('employee')">员工</div>
+      <div class="top-tab-item"        id="at-message"   onclick="switchAdminTab('message')">消息</div>
     </div>
-    <div id="adminOverview"></div>
-    <div id="adminCustomers" style="display:none;"></div>
-    <div id="adminGoals"     style="display:none;"></div>
-    <div id="adminEmployee"  style="display:none;"></div>
+    <div id="ap-overview"></div>
+    <div id="ap-customers" style="display:none;"></div>
+    <div id="ap-goals"     style="display:none;"></div>
+    <div id="ap-employee"  style="display:none;"></div>
+    <div id="ap-message"   style="display:none;"></div>
   </div>
 </div>
 
 <!-- 底部Tab -->
 <div class="tab-bar">
-  <div class="tab-item active" id="tabBtn-home"     onclick="switchTab('home')">
-    <span class="tab-icon">🏠</span>首页
-  </div>
-  <div class="tab-item" id="tabBtn-customer" onclick="switchTab('customer')">
-    <span class="tab-icon">👥</span>客户
-  </div>
-  <div class="tab-item" id="tabBtn-goal"     onclick="switchTab('goal')">
-    <span class="tab-icon">🎯</span>目标
-  </div>
-  <div class="tab-item" id="tabBtn-admin"    onclick="switchTab('admin')">
-    <span class="tab-icon">📊</span>管理
-  </div>
+  <div class="tab-item active" id="tabBtn-home"     onclick="switchTab('home')"><span class="tab-icon">🏠</span>首页</div>
+  <div class="tab-item"        id="tabBtn-customer" onclick="switchTab('customer')"><span class="tab-icon">👥</span>客户</div>
+  <div class="tab-item"        id="tabBtn-goal"     onclick="switchTab('goal')"><span class="tab-icon">🎯</span>目标</div>
+  <div class="tab-item"        id="tabBtn-admin"    onclick="switchTab('admin')"><span class="tab-icon">📊</span>管理</div>
 </div>
 
-<!-- 客户表单弹窗 -->
-<div class="modal-mask" id="customerMask" onclick="closeCustomerForm()"></div>
-<div class="modal-box" id="customerModal" style="display:none;">
-  <div class="modal-title" id="customerModalTitle">添加客户</div>
-  <div class="form-group">
-    <label class="form-label">姓名 *</label>
-    <input class="form-input" id="f_name" placeholder="请输入客户姓名"/>
-  </div>
-  <div class="form-group">
-    <label class="form-label">电话 *</label>
-    <input class="form-input" id="f_phone" type="tel" placeholder="联系电话"/>
-  </div>
-  <div class="form-group">
-    <label class="form-label">公司</label>
-    <input class="form-input" id="f_company" placeholder="公司名称"/>
-  </div>
-  <div class="form-group">
-    <label class="form-label">职位</label>
-    <input class="form-input" id="f_position" placeholder="职位"/>
-  </div>
-  <div class="form-group">
-    <label class="form-label">来源渠道</label>
-    <input class="form-input" id="f_source" placeholder="如：转介绍、电话开发"/>
-  </div>
-  <div class="form-group">
-    <label class="form-label">意向金额（元）</label>
-    <input class="form-input" id="f_intentAmount" type="number" placeholder="预计成交金额"/>
-  </div>
-  <div class="form-group">
-    <label class="form-label">客户状态</label>
+<!-- 客户弹窗 -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeForm()"></div>
+<div class="modal-box" id="modalBox" style="display:none;">
+  <div class="modal-title" id="modalTitle">添加客户</div>
+  <div class="form-group"><label class="form-label">姓名 *</label><input class="form-input" id="f_name" placeholder="请输入客户姓名"/></div>
+  <div class="form-group"><label class="form-label">电话 *</label><input class="form-input" id="f_phone" type="tel" placeholder="联系电话"/></div>
+  <div class="form-group"><label class="form-label">公司</label><input class="form-input" id="f_company" placeholder="公司名称"/></div>
+  <div class="form-group"><label class="form-label">职位</label><input class="form-input" id="f_position" placeholder="职位"/></div>
+  <div class="form-group"><label class="form-label">来源渠道</label><input class="form-input" id="f_source" placeholder="如：转介绍、电话开发"/></div>
+  <div class="form-group"><label class="form-label">意向金额（元）</label><input class="form-input" id="f_amount" type="number" placeholder="预计成交金额"/></div>
+  <div class="form-group"><label class="form-label">客户状态</label>
     <select class="form-select" id="f_status">
       <option value="follow">跟进中</option>
       <option value="intent">意向客户</option>
@@ -314,17 +313,59 @@
       <option value="lost">已流失</option>
     </select>
   </div>
-  <div class="form-group">
-    <label class="form-label">备注</label>
-    <textarea class="form-textarea" id="f_remark" placeholder="跟进备注..."></textarea>
-  </div>
-  <button class="btn btn-primary" onclick="submitCustomer()" style="margin-bottom:10px;">保存</button>
-  <button class="btn btn-gray"    onclick="closeCustomerForm()">取消</button>
+  <div class="form-group"><label class="form-label">备注</label><textarea class="form-textarea" id="f_remark" placeholder="跟进备注..."></textarea></div>
+  <button class="btn btn-primary" onclick="submitCustomer()">保存</button>
+  <button class="btn btn-gray" onclick="closeForm()">取消</button>
 </div>
 
 <script>
-// ✅ 已填入你的Firebase配置
-const firebaseConfig = {
+// ============================================================
+// 账号系统
+// ============================================================
+var ACCOUNTS = {
+  '王凯':   { password: '888999', name: '王凯',   role: 'staff' },
+  '朱红':   { password: '999000', name: '朱红',   role: 'staff' },
+  'admin':  { password: 'admin888', name: '管理员', role: 'admin' }
+};
+
+var currentAccount = null;
+
+function doLogin() {
+  var username = document.getElementById('loginUser').value.trim();
+  var password = document.getElementById('loginPwd').value.trim();
+  var errEl    = document.getElementById('loginError');
+
+  if (!ACCOUNTS[username] || ACCOUNTS[username].password !== password) {
+    errEl.style.display = 'block';
+    return;
+  }
+  errEl.style.display = 'none';
+  currentAccount = ACCOUNTS[username];
+  localStorage.setItem('crmUser', JSON.stringify(currentAccount));
+  document.getElementById('loginPage').style.display = 'none';
+  initApp();
+}
+
+function checkLogin() {
+  var saved = localStorage.getItem('crmUser');
+  if (saved) {
+    currentAccount = JSON.parse(saved);
+    document.getElementById('loginPage').style.display = 'none';
+    initApp();
+  }
+}
+
+function doLogout() {
+  localStorage.removeItem('crmUser');
+  localStorage.removeItem('adminVerified');
+  currentAccount = null;
+  location.reload();
+}
+
+// ============================================================
+// Firebase配置
+// ============================================================
+var firebaseConfig = {
   apiKey:            "AIzaSyBvQRKoNHHS3QumbLbh7TsLWz9B6ntUl9w",
   authDomain:        "salescrm-722ad.firebaseapp.com",
   projectId:         "salescrm-722ad",
@@ -334,119 +375,130 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-const db   = firebase.firestore();
-const auth = firebase.auth();
+var db   = firebase.firestore();
+var auth = firebase.auth();
 
-let currentUser     = null;
-let allCustomers    = [];
-let editingCustomerId = null;
-let dailyGoalId     = null;
-let monthlyGoalId   = null;
-const ADMIN_PWD     = 'admin888'; // ⚠️ 可自行修改管理员密码
+// 全局变量
+var currentUser   = null;
+var allCustomers  = [];
+var editingId     = null;
+var dailyGoalId   = null;
+var monthlyGoalId = null;
+var msgListener   = null;
+var lastMsgId     = localStorage.getItem('lastMsgId') || '';
+var statusLabel   = {follow:'跟进中',intent:'意向客户',deal:'已成交',lost:'已流失'};
+var ADMIN_PWD     = 'admin888';
 
 // ============================================================
-// 初始化
+// 初始化App
 // ============================================================
-window.onload = () => {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
-  }
-  const now = new Date();
-  const dateStr = now.toLocaleDateString('zh-CN', {
-    year:'numeric', month:'long', day:'numeric', weekday:'long'
+function initApp() {
+  var now     = new Date();
+  var today   = now.toISOString().slice(0,10);
+  var month   = today.slice(0,7);
+  var dateStr = now.toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
+
+  document.getElementById('homeDate').textContent     = dateStr;
+  document.getElementById('dailyTitle').textContent   = '今日目标（' + today + '）';
+  document.getElementById('monthlyTitle').textContent = '月度目标（' + month + '）';
+  document.getElementById('homeUser').textContent     = currentAccount.name;
+  document.getElementById('headerSub').textContent    = '欢迎，' + currentAccount.name;
+
+  // 匿名登录Firebase
+  auth.signInAnonymously()
+    .then(function(result) {
+      currentUser = result.user;
+      loadHomeData();
+      loadCustomers();
+      loadGoals();
+      startMsgListener(); // 开始监听消息
+      // 如果是管理员账号自动进入后台
+      if (currentAccount.role === 'admin') {
+        localStorage.setItem('adminVerified','yes');
+        document.getElementById('adminLogin').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+      }
+    })
+    .catch(function(err) {
+      document.getElementById('headerSub').textContent = '连接失败，请刷新重试';
+      console.error('Auth error:', err);
+    });
+}
+
+// ============================================================
+// 页面加载
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  checkLogin();
+  // 回车键登录
+  document.getElementById('loginPwd').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLogin();
   });
-  const today = now.toISOString().slice(0,10);
-  const month = today.slice(0,7);
-  document.getElementById('homeDate').textContent      = dateStr;
-  document.getElementById('dailyTitle').textContent    = `今日目标（${today}）`;
-  document.getElementById('monthlyTitle').textContent  = `月度目标（${month}）`;
+});
 
-  auth.signInAnonymously().then(result => {
-    currentUser = result.user;
-    const shortId = currentUser.uid.slice(0,4).toUpperCase();
-    document.getElementById('homeUserName').textContent = '员工' + shortId;
-    document.getElementById('headerSub').textContent    = '员工ID：' + currentUser.uid.slice(0,8);
-    loadHomeData();
-    loadCustomers();
-    loadGoals();
+// ============================================================
+// Tab切换
+// ============================================================
+function switchTab(tab) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.tab-item').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById('page-' + tab).classList.add('active');
+  document.getElementById('tabBtn-' + tab).classList.add('active');
+  if (tab === 'home')     { loadHomeData(); }
+  if (tab === 'customer') { loadCustomers(); }
+  if (tab === 'goal')     { loadGoals(); }
+  if (tab === 'admin') {
     if (localStorage.getItem('adminVerified') === 'yes') {
       document.getElementById('adminLogin').style.display = 'none';
       document.getElementById('adminPanel').style.display = 'block';
+      loadAdminData();
     }
-  }).catch(err => {
-    document.getElementById('headerSub').textContent = '加载失败，请刷新重试';
-    console.error(err);
-  });
-};
-
-// ============================================================
-// Tab 切换
-// ============================================================
-function switchTab(tab) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-  document.getElementById('page-' + tab).classList.add('active');
-  document.getElementById('tabBtn-' + tab).classList.add('active');
-  if (tab === 'home')     loadHomeData();
-  if (tab === 'customer') loadCustomers();
-  if (tab === 'goal')     loadGoals();
-  if (tab === 'admin' && localStorage.getItem('adminVerified') === 'yes') {
-    document.getElementById('adminLogin').style.display = 'none';
-    document.getElementById('adminPanel').style.display = 'block';
-    loadAdminData();
   }
 }
 
 // ============================================================
-// 首页
+// 首页数据
 // ============================================================
 function loadHomeData() {
   if (!currentUser) return;
-  const today = new Date().toISOString().slice(0,10);
-  const month = today.slice(0,7);
+  var today = new Date().toISOString().slice(0,10);
+  var month = today.slice(0,7);
 
   db.collection('goals')
-    .where('uid','==',currentUser.uid)
+    .where('userName','==', currentAccount.name)
     .where('type','==','daily')
     .where('date','==',today)
-    .get().then(snap => {
-      const card = document.getElementById('homeDailyCard');
+    .get()
+    .then(function(snap) {
+      var card = document.getElementById('homeDailyCard');
       if (!snap.empty) {
-        const g = snap.docs[0].data();
-        card.innerHTML = `
-          <div class="stat-row">
-            <div><span class="stat-num">${g.newCustomers||0}</span><span class="stat-label">新增客户</span></div>
-            <div><span class="stat-num">${g.calls||0}</span><span class="stat-label">拨打电话</span></div>
-            <div><span class="stat-num">${g.intentCustomers||0}</span><span class="stat-label">意向客户</span></div>
-          </div>`;
+        var g = snap.docs[0].data();
+        card.innerHTML =
+          '<div class="stat-row">' +
+          '<div><span class="stat-num">' + (g.newCustomers||0) + '</span><span class="stat-label">新增客户</span></div>' +
+          '<div><span class="stat-num">' + (g.calls||0) + '</span><span class="stat-label">拨打电话</span></div>' +
+          '<div><span class="stat-num">' + (g.intentCustomers||0) + '</span><span class="stat-label">意向客户</span></div>' +
+          '</div>';
       } else {
         card.innerHTML = '<div class="empty">暂无今日计划，去"目标"页面设定</div>';
       }
     });
 
   db.collection('goals')
-    .where('uid','==',currentUser.uid)
+    .where('userName','==', currentAccount.name)
     .where('type','==','monthly')
     .where('month','==',month)
-    .get().then(snap => {
-      const card = document.getElementById('homeMonthCard');
+    .get()
+    .then(function(snap) {
+      var card = document.getElementById('homeMonthCard');
       if (!snap.empty) {
-        const g = snap.docs[0].data();
-        const pct = g.salesTarget > 0
+        var g   = snap.docs[0].data();
+        var pct = g.salesTarget > 0
           ? Math.min(Math.round(g.salesDone/g.salesTarget*100),100) : 0;
-        card.innerHTML = `
-          <div class="progress-row">
-            <span>目标：¥${g.salesTarget||0}</span>
-            <span>已完成：¥${g.salesDone||0}</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill" style="width:${pct}%"></div>
-          </div>
-          <div class="progress-pct">
-            完成率：${pct}%
-            &nbsp;&nbsp;
-            <span style="color:#ff4d4f;">未达成：¥${g.salesUnfinished||0}</span>
-          </div>`;
+        card.innerHTML =
+          '<div class="prow"><span>目标：¥' + (g.salesTarget||0) + '</span><span>已完成：¥' + (g.salesDone||0) + '</span></div>' +
+          '<div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+          '<div class="ppct">完成率：' + pct + '% &nbsp;<span style="color:#ff4d4f;">未达成：¥' + (g.salesUnfinished||0) + '</span></div>';
       } else {
         card.innerHTML = '<div class="empty">暂无月度计划</div>';
       }
@@ -459,114 +511,146 @@ function loadHomeData() {
 function loadCustomers() {
   if (!currentUser) return;
   db.collection('customers')
-    .where('uid','==',currentUser.uid)
+    .where('userName','==', currentAccount.name)
     .orderBy('createTime','desc')
-    .get().then(snap => {
-      allCustomers = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+    .get()
+    .then(function(snap) {
+      allCustomers = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
       renderCustomers(allCustomers);
-    });
+    })
+    .catch(function(err){ console.error('loadCustomers:', err); });
 }
 
 function renderCustomers(list) {
-  const container = document.getElementById('customerList');
-  if (list.length === 0) {
+  var container = document.getElementById('customerList');
+  var tableWrap = document.getElementById('customerTable');
+
+  if (!list || list.length === 0) {
+    tableWrap.innerHTML = '';
     container.innerHTML = '<div class="empty">暂无客户，点击上方添加</div>';
     return;
   }
-  const statusLabel = { follow:'跟进中', intent:'意向客户', deal:'已成交', lost:'已流失' };
-  container.innerHTML = list.map(c => `
-    <div class="card" style="margin-bottom:12px;">
-      <div class="customer-header">
-        <span class="customer-name"></span>
-        <span class="tag tag-"></span>
-      </div>
-      <div class="customer-info">📞 </div>
-      </div>` : ''}
-      </div>` : ''}
-      </div>` : ''}
-      <div class="action-row">
-        <button class="btn-sm btn-edit-sm" onclick="editCustomer('')">编辑</button>
-        <button class="btn-sm btn-del-sm"  onclick="deleteCustomer('')">删除</button>
-      </div>
-    </div>
-  `).join('');
+
+  // 表格视图
+  var tHtml =
+    '<table>' +
+    '<thead><tr>' +
+    '<th>姓名</th><th>电话</th><th>公司</th><th>状态</th><th>意向金额</th><th>操作</th>' +
+    '</tr></thead><tbody>';
+  list.forEach(function(c) {
+    tHtml +=
+      '<tr>' +
+      '<td><b>' + c.name + '</b></td>' +
+      '<td>' + c.phone + '</td>' +
+      '<td>' + (c.company||'-') + '</td>' +
+      '<td><span class="tag tag-' + c.status + '">' + (statusLabel[c.status]||'') + '</span></td>' +
+      '<td>' + (c.intentAmount ? '¥'+c.intentAmount : '-') + '</td>' +
+      '<td>' +
+      '<button class="btn-sm btn-edit-sm" onclick="editCustomer(\'' + c.id + '\')">编辑</button> ' +
+      '<button class="btn-sm btn-del-sm"  onclick="deleteCustomer(\'' + c.id + '\')">删除</button>' +
+      '</td>' +
+      '</tr>';
+  });
+  tHtml += '</tbody></table>';
+  tableWrap.innerHTML = tHtml;
+
+  // 卡片视图（手机端详情）
+  var html = '';
+  list.forEach(function(c) {
+    html +=
+      '<div class="card" style="margin-bottom:12px;">' +
+      '<div class="c-header">' +
+      '<span class="c-name">' + c.name + '</span>' +
+      '<span class="tag tag-' + c.status + '">' + (statusLabel[c.status]||'') + '</span>' +
+      '</div>' +
+      '<div class="c-info">📞 ' + c.phone + '</div>' +
+      (c.company ? '<div class="c-info">🏢 ' + c.company + (c.position ? ' · '+c.position : '') + '</div>' : '') +
+      (c.intentAmount ? '<div class="c-info">💰 意向金额：¥' + c.intentAmount + '</div>' : '') +
+      (c.remark ? '<div class="c-info">📝 ' + c.remark + '</div>' : '') +
+      '<div class="action-row">' +
+      '<button class="btn-sm btn-edit-sm" onclick="editCustomer(\'' + c.id + '\')">编辑</button>' +
+      '<button class="btn-sm btn-del-sm"  onclick="deleteCustomer(\'' + c.id + '\')">删除</button>' +
+      '</div></div>';
+  });
+  container.innerHTML = html;
 }
 
 function searchCustomers() {
-  const key = document.getElementById('searchInput').value.trim();
+  var key = document.getElementById('searchInput').value.trim();
   if (!key) { renderCustomers(allCustomers); return; }
-  const result = allCustomers.filter(c =>
-    c.name.includes(key) ||
-    c.phone.includes(key) ||
-    (c.company||'').includes(key)
-  );
+  var result = allCustomers.filter(function(c) {
+    return c.name.includes(key) ||
+           c.phone.includes(key) ||
+           (c.company||'').includes(key);
+  });
   renderCustomers(result);
 }
 
-function showCustomerForm() {
-  editingCustomerId = null;
-  document.getElementById('customerModalTitle').textContent = '添加客户';
-  ['f_name','f_phone','f_company','f_position','f_source','f_remark','f_intentAmount']
-    .forEach(id => document.getElementById(id).value = '');
+function showAddForm() {
+  editingId = null;
+  document.getElementById('modalTitle').textContent = '添加客户';
+  ['f_name','f_phone','f_company','f_position','f_source','f_remark','f_amount']
+    .forEach(function(id){ document.getElementById(id).value = ''; });
   document.getElementById('f_status').value = 'follow';
-  document.getElementById('customerMask').classList.add('show');
-  document.getElementById('customerModal').style.display = 'block';
+  document.getElementById('modalOverlay').classList.add('show');
+  document.getElementById('modalBox').style.display = 'block';
 }
 
 function editCustomer(id) {
-  const c = allCustomers.find(x => x.id === id);
+  var c = allCustomers.find(function(x){ return x.id === id; });
   if (!c) return;
-  editingCustomerId = id;
-  document.getElementById('customerModalTitle').textContent = '编辑客户';
-  document.getElementById('f_name').value         = c.name || '';
-  document.getElementById('f_phone').value        = c.phone || '';
-  document.getElementById('f_company').value      = c.company || '';
-  document.getElementById('f_position').value     = c.position || '';
-  document.getElementById('f_source').value       = c.source || '';
-  document.getElementById('f_intentAmount').value = c.intentAmount || '';
-  document.getElementById('f_status').value       = c.status || 'follow';
-  document.getElementById('f_remark').value       = c.remark || '';
-  document.getElementById('customerMask').classList.add('show');
-  document.getElementById('customerModal').style.display = 'block';
+  editingId = id;
+  document.getElementById('modalTitle').textContent   = '编辑客户';
+  document.getElementById('f_name').value             = c.name || '';
+  document.getElementById('f_phone').value            = c.phone || '';
+  document.getElementById('f_company').value          = c.company || '';
+  document.getElementById('f_position').value         = c.position || '';
+  document.getElementById('f_source').value           = c.source || '';
+  document.getElementById('f_amount').value           = c.intentAmount || '';
+  document.getElementById('f_status').value           = c.status || 'follow';
+  document.getElementById('f_remark').value           = c.remark || '';
+  document.getElementById('modalOverlay').classList.add('show');
+  document.getElementById('modalBox').style.display   = 'block';
 }
 
-function closeCustomerForm() {
-  document.getElementById('customerMask').classList.remove('show');
-  document.getElementById('customerModal').style.display = 'none';
+function closeForm() {
+  document.getElementById('modalOverlay').classList.remove('show');
+  document.getElementById('modalBox').style.display = 'none';
 }
 
 function submitCustomer() {
-  const name  = document.getElementById('f_name').value.trim();
-  const phone = document.getElementById('f_phone').value.trim();
+  var name  = document.getElementById('f_name').value.trim();
+  var phone = document.getElementById('f_phone').value.trim();
   if (!name || !phone) { alert('姓名和电话必填'); return; }
-  const data = {
+  var data = {
     uid:          currentUser.uid,
-    name, phone,
+    userName:     currentAccount.name,
+    name:         name,
+    phone:        phone,
     company:      document.getElementById('f_company').value.trim(),
     position:     document.getElementById('f_position').value.trim(),
     source:       document.getElementById('f_source').value.trim(),
-    intentAmount: document.getElementById('f_intentAmount').value.trim(),
+    intentAmount: document.getElementById('f_amount').value.trim(),
     status:       document.getElementById('f_status').value,
     remark:       document.getElementById('f_remark').value.trim(),
     updateTime:   firebase.firestore.FieldValue.serverTimestamp()
   };
-  const op = editingCustomerId
-    ? db.collection('customers').doc(editingCustomerId).update(data)
-    : db.collection('customers').add({
-        ...data,
+  var op = editingId
+    ? db.collection('customers').doc(editingId).update(data)
+    : db.collection('customers').add(Object.assign({}, data, {
         createTime: firebase.firestore.FieldValue.serverTimestamp()
-      });
-  op.then(() => {
-    showToast(editingCustomerId ? '更新成功' : '添加成功');
-    closeCustomerForm();
+      }));
+  op.then(function() {
+    showToast(editingId ? '更新成功' : '添加成功');
+    closeForm();
     loadCustomers();
-  }).catch(err => alert('保存失败：' + err.message));
+  }).catch(function(err){ alert('保存失败：' + err.message); });
 }
 
 function deleteCustomer(id) {
   if (!confirm('确认删除？删除后无法恢复')) return;
   db.collection('customers').doc(id).delete()
-    .then(() => { showToast('已删除'); loadCustomers(); });
+    .then(function(){ showToast('已删除'); loadCustomers(); });
 }
 
 // ============================================================
@@ -581,24 +665,25 @@ function switchGoalTab(tab) {
 
 function loadGoals() {
   if (!currentUser) return;
-  const today = new Date().toISOString().slice(0,10);
-  const month = today.slice(0,7);
+  var today = new Date().toISOString().slice(0,10);
+  var month = today.slice(0,7);
 
   db.collection('goals')
-    .where('uid','==',currentUser.uid)
+    .where('userName','==', currentAccount.name)
     .where('type','==','daily')
     .where('date','==',today)
-    .get().then(snap => {
+    .get()
+    .then(function(snap) {
       if (!snap.empty) {
-        const doc = snap.docs[0];
+        var doc = snap.docs[0];
         dailyGoalId = doc.id;
-        const g = doc.data();
-        document.getElementById('d_newCustomers').value    = g.newCustomers || '';
-        document.getElementById('d_calls').value           = g.calls || '';
-        document.getElementById('d_intentCustomers').value = g.intentCustomers || '';
-        document.getElementById('prev_new').textContent    = g.newCustomers || 0;
-        document.getElementById('prev_calls').textContent  = g.calls || 0;
-        document.getElementById('prev_intent').textContent = g.intentCustomers || 0;
+        var g = doc.data();
+        document.getElementById('d_new').value    = g.newCustomers || '';
+        document.getElementById('d_calls').value  = g.calls || '';
+        document.getElementById('d_intent').value = g.intentCustomers || '';
+        document.getElementById('pv_new').textContent    = g.newCustomers || 0;
+        document.getElementById('pv_calls').textContent  = g.calls || 0;
+        document.getElementById('pv_intent').textContent = g.intentCustomers || 0;
         document.getElementById('dailyPreview').style.display = 'block';
       } else {
         dailyGoalId = null;
@@ -607,24 +692,25 @@ function loadGoals() {
     });
 
   db.collection('goals')
-    .where('uid','==',currentUser.uid)
+    .where('userName','==', currentAccount.name)
     .where('type','==','monthly')
     .where('month','==',month)
-    .get().then(snap => {
+    .get()
+    .then(function(snap) {
       if (!snap.empty) {
-        const doc = snap.docs[0];
+        var doc = snap.docs[0];
         monthlyGoalId = doc.id;
-        const g = doc.data();
-        const pct = g.salesTarget > 0
+        var g   = doc.data();
+        var pct = g.salesTarget > 0
           ? Math.min(Math.round(g.salesDone/g.salesTarget*100),100) : 0;
-        document.getElementById('m_salesTarget').value         = g.salesTarget || '';
-        document.getElementById('m_salesDone').value           = g.salesDone || '';
-        document.getElementById('m_salesUnfinished').value     = g.salesUnfinished || '';
-        document.getElementById('m_prev_target').textContent   = g.salesTarget || 0;
-        document.getElementById('m_prev_done').textContent     = g.salesDone || 0;
-        document.getElementById('m_prev_unfinished').textContent = g.salesUnfinished || 0;
-        document.getElementById('m_pct').textContent           = pct;
-        document.getElementById('m_progressFill').style.width  = pct + '%';
+        document.getElementById('m_target').value        = g.salesTarget || '';
+        document.getElementById('m_done').value          = g.salesDone || '';
+        document.getElementById('m_left').value          = g.salesUnfinished || '';
+        document.getElementById('mp_target').textContent = g.salesTarget || 0;
+        document.getElementById('mp_done').textContent   = g.salesDone || 0;
+        document.getElementById('mp_left').textContent   = g.salesUnfinished || 0;
+        document.getElementById('mp_pct').textContent    = pct;
+        document.getElementById('mp_bar').style.width    = pct + '%';
         document.getElementById('monthlyPreview').style.display = 'block';
       } else {
         monthlyGoalId = null;
@@ -633,59 +719,96 @@ function loadGoals() {
     });
 }
 
-function calcUnfinished() {
-  const t = Number(document.getElementById('m_salesTarget').value) || 0;
-  const d = Number(document.getElementById('m_salesDone').value)   || 0;
-  document.getElementById('m_salesUnfinished').value = Math.max(t - d, 0);
+function calcLeft() {
+  var t = Number(document.getElementById('m_target').value) || 0;
+  var d = Number(document.getElementById('m_done').value)   || 0;
+  document.getElementById('m_left').value = Math.max(t - d, 0);
 }
 
 function saveDailyGoal() {
   if (!currentUser) return;
-  const today = new Date().toISOString().slice(0,10);
-  const data = {
+  var today = new Date().toISOString().slice(0,10);
+  var data = {
     uid:             currentUser.uid,
+    userName:        currentAccount.name,
     type:            'daily',
     date:            today,
-    newCustomers:    Number(document.getElementById('d_newCustomers').value)    || 0,
-    calls:           Number(document.getElementById('d_calls').value)           || 0,
-    intentCustomers: Number(document.getElementById('d_intentCustomers').value) || 0,
+    newCustomers:    Number(document.getElementById('d_new').value)    || 0,
+    calls:           Number(document.getElementById('d_calls').value)  || 0,
+    intentCustomers: Number(document.getElementById('d_intent').value) || 0,
     updateTime:      firebase.firestore.FieldValue.serverTimestamp()
   };
-  const op = dailyGoalId
+  var op = dailyGoalId
     ? db.collection('goals').doc(dailyGoalId).update(data)
-    : db.collection('goals').add({
-        ...data,
+    : db.collection('goals').add(Object.assign({}, data, {
         createTime: firebase.firestore.FieldValue.serverTimestamp()
-      });
-  op.then(() => { showToast('保存成功'); loadGoals(); loadHomeData(); });
+      }));
+  op.then(function(){ showToast('保存成功'); loadGoals(); loadHomeData(); });
 }
 
 function saveMonthlyGoal() {
   if (!currentUser) return;
-  const month = new Date().toISOString().slice(0,7);
-  const data = {
+  var month = new Date().toISOString().slice(0,7);
+  var data = {
     uid:             currentUser.uid,
+    userName:        currentAccount.name,
     type:            'monthly',
-    month,
-    salesTarget:     Number(document.getElementById('m_salesTarget').value)     || 0,
-    salesDone:       Number(document.getElementById('m_salesDone').value)       || 0,
-    salesUnfinished: Number(document.getElementById('m_salesUnfinished').value) || 0,
+    month:           month,
+    salesTarget:     Number(document.getElementById('m_target').value) || 0,
+    salesDone:       Number(document.getElementById('m_done').value)   || 0,
+    salesUnfinished: Number(document.getElementById('m_left').value)   || 0,
     updateTime:      firebase.firestore.FieldValue.serverTimestamp()
   };
-  const op = monthlyGoalId
+  var op = monthlyGoalId
     ? db.collection('goals').doc(monthlyGoalId).update(data)
-    : db.collection('goals').add({
-        ...data,
+    : db.collection('goals').add(Object.assign({}, data, {
         createTime: firebase.firestore.FieldValue.serverTimestamp()
+      }));
+  op.then(function(){ showToast('保存成功'); loadGoals(); loadHomeData(); });
+}
+
+// ============================================================
+// 实时消息系统
+// ============================================================
+function startMsgListener() {
+  // 员工端实时监听消息
+  if (currentAccount.role === 'staff') {
+    msgListener = db.collection('messages')
+      .orderBy('createTime','desc')
+      .limit(1)
+      .onSnapshot(function(snap) {
+        if (snap.empty) return;
+        var doc  = snap.docs[0];
+        var msg  = doc.data();
+        var msgId = doc.id;
+        // 判断是否是新消息、是否是发给自己的
+        if (msgId === lastMsgId) return;
+        if (msg.target !== '全体' && msg.target !== currentAccount.name) return;
+        lastMsgId = msgId;
+        localStorage.setItem('lastMsgId', msgId);
+        showMsgPopup(msg.content, msg.createTime);
       });
-  op.then(() => { showToast('保存成功'); loadGoals(); loadHomeData(); });
+  }
+}
+
+function showMsgPopup(content, time) {
+  document.getElementById('msgContent').textContent = content;
+  var timeStr = time && time.toDate
+    ? time.toDate().toLocaleString('zh-CN')
+    : new Date().toLocaleString('zh-CN');
+  document.getElementById('msgTime').textContent = '发送时间：' + timeStr;
+  document.getElementById('msgPopup').classList.add('show');
+}
+
+function closeMsg() {
+  document.getElementById('msgPopup').classList.remove('show');
 }
 
 // ============================================================
 // 管理后台
 // ============================================================
 function verifyAdmin() {
-  const pwd = document.getElementById('adminPwd').value;
+  var pwd = document.getElementById('adminPwd').value;
   if (pwd === ADMIN_PWD) {
     localStorage.setItem('adminVerified','yes');
     document.getElementById('adminLogin').style.display = 'none';
@@ -704,145 +827,195 @@ function logoutAdmin() {
 }
 
 function switchAdminTab(tab) {
-  ['overview','customers','goals','employee'].forEach(t => {
-    const key = t.charAt(0).toUpperCase() + t.slice(1);
-    document.getElementById('admin' + key).style.display = t === tab ? 'block' : 'none';
-    document.getElementById('atab-' + t).classList.toggle('active', t === tab);
+  ['overview','customers','goals','employee','message'].forEach(function(t) {
+    document.getElementById('ap-' + t).style.display = t === tab ? 'block' : 'none';
+    document.getElementById('at-' + t).classList.toggle('active', t === tab);
   });
+  if (tab === 'message') renderMsgPanel();
 }
 
 function loadAdminData() {
-  const month = new Date().toISOString().slice(0,7);
-  const statusLabel = { follow:'跟进中', intent:'意向客户', deal:'已成交', lost:'已流失' };
+  var month = new Date().toISOString().slice(0,7);
 
-  // 拉取所有客户
   db.collection('customers').orderBy('createTime','desc').get()
-    .then(snap => {
-      const customers = snap.docs.map(d => ({ id:d.id, ...d.data() }));
-      const total  = customers.length;
-      const deal   = customers.filter(c => c.status === 'deal').length;
-      const intent = customers.filter(c => c.status === 'intent').length;
+    .then(function(snap) {
+      var customers = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
+      var total  = customers.length;
+      var deal   = customers.filter(function(c){ return c.status==='deal'; }).length;
+      var intent = customers.filter(function(c){ return c.status==='intent'; }).length;
 
-      // 员工聚合
-      const empMap = {};
-      customers.forEach(c => {
-        if (!empMap[c.uid]) {
-          empMap[c.uid] = { uid:c.uid, total:0, deal:0, intent:0, follow:0, lost:0 };
+      // 按员工姓名聚合
+      var empMap = {};
+      customers.forEach(function(c) {
+        var name = c.userName || c.uid.slice(0,8);
+        if (!empMap[name]) {
+          empMap[name] = {name:name, total:0, deal:0, intent:0, follow:0, lost:0};
         }
-        empMap[c.uid].total++;
-        empMap[c.uid][c.status] = (empMap[c.uid][c.status]||0) + 1;
+        empMap[name].total++;
+        empMap[name][c.status] = (empMap[name][c.status]||0) + 1;
       });
 
-      // 渲染总览
-      document.getElementById('adminOverview').innerHTML = `
-        <div class="section-title">整体数据（本月 ）</div>
-        <div class="stats-grid" style="margin-bottom:12px;">
-          <div class="stat-card blue">
-            <div class="num"></div>
-            <div class="desc">总客户数</div>
-          </div>
-          <div class="stat-card green">
-            <div class="num"></div>
-            <div class="desc">已成交</div>
-          </div>
-          <div class="stat-card orange">
-            <div class="num"></div>
-            <div class="desc">意向客户</div>
-          </div>
-          <div class="stat-card purple" id="adminSalesCard">
-            <div class="num">¥0</div>
-            <div class="desc">本月总销售额</div>
-          </div>
-        </div>`;
+      // 总览
+      document.getElementById('ap-overview').innerHTML =
+        '<div class="sec-title">整体数据（' + month + '）</div>' +
+        '<div class="stats-grid">' +
+        '<div class="stat-card blue"><div class="num">' + total + '</div><div class="desc">总客户数</div></div>' +
+        '<div class="stat-card green"><div class="num">' + deal + '</div><div class="desc">已成交</div></div>' +
+        '<div class="stat-card orange"><div class="num">' + intent + '</div><div class="desc">意向客户</div></div>' +
+        '<div class="stat-card purple" id="salesCard"><div class="num">¥0</div><div class="desc">本月总销售额</div></div>' +
+        '</div>';
 
-      // 渲染全员客户列表
-      document.getElementById('adminCustomers').innerHTML = `
-        <div class="section-title">全员客户（共  条）</div>
-        </span>
-              <span class="tag tag-"></span>
-            </div>
-            <div class="customer-info">📞 </div>
-            </div>` : ''}
-            <div class="customer-info" style="color:#bbb;font-size:11px;">
-              员工ID：
-            </div>
-          </div>`
-        ).join('')}`;
+      // 客户列表（带员工姓名）
+      var cHtml = '<div class="sec-title">全员客户（共 ' + total + ' 条）</div>' +
+        '<div class="table-wrap"><table><thead><tr>' +
+        '<th>姓名</th><th>电话</th><th>状态</th><th>意向金额</th><th>员工</th>' +
+        '</tr></thead><tbody>';
+      customers.forEach(function(c) {
+        cHtml +=
+          '<tr>' +
+          '<td><b>' + c.name + '</b></td>' +
+          '<td>' + c.phone + '</td>' +
+          '<td><span class="tag tag-' + c.status + '">' + (statusLabel[c.status]||'') + '</span></td>' +
+          '<td>' + (c.intentAmount ? '¥'+c.intentAmount : '-') + '</td>' +
+          '<td><b>' + (c.userName||'-') + '</b></td>' +
+          '</tr>';
+      });
+      cHtml += '</tbody></table></div>';
+      if (customers.length === 0) cHtml += '<div class="empty">暂无客户数据</div>';
+      document.getElementById('ap-customers').innerHTML = cHtml;
 
-      // 渲染员工分布
-      const empList = Object.values(empMap);
-      document.getElementById('adminEmployee').innerHTML = `
-        <div class="section-title">员工客户分布（共  人）</div>
-        </div>
-            <div class="emp-stat-row">
-              <div class="emp-stat-item">
-                <span class="emp-num"></span>
-                <span class="emp-lbl">总客户</span>
-              </div>
-              <div class="emp-stat-item">
-                <span class="emp-num green"></span>
-                <span class="emp-lbl">已成交</span>
-              </div>
-              <div class="emp-stat-item">
-                <span class="emp-num orange"></span>
-                <span class="emp-lbl">意向</span>
-              </div>
-              <div class="emp-stat-item">
-                <span class="emp-num blue"></span>
-                <span class="emp-lbl">跟进中</span>
-              </div>
-              <div class="emp-stat-item">
-                <span class="emp-num red"></span>
-                <span class="emp-lbl">已流失</span>
-              </div>
-            </div>
-          </div>`
-        ).join('')}`;
+      // 员工分布（显示真实姓名）
+      var empList = Object.values(empMap);
+      var eHtml = '<div class="sec-title">员工客户分布（共 ' + empList.length + ' 人）</div>';
+      empList.forEach(function(e) {
+        eHtml +=
+          '<div class="card" style="margin-bottom:12px;">' +
+          '<div style="font-size:16px;font-weight:bold;color:#222;margin-bottom:12px;">👤 ' + e.name + '</div>' +
+          '<div class="emp-row">' +
+          '<div class="emp-item"><span class="emp-num">'        + e.total  + '</span><span class="emp-lbl">总客户</span></div>' +
+          '<div class="emp-item"><span class="emp-num green">'  + e.deal   + '</span><span class="emp-lbl">已成交</span></div>' +
+          '<div class="emp-item"><span class="emp-num orange">' + e.intent + '</span><span class="emp-lbl">意向</span></div>' +
+          '<div class="emp-item"><span class="emp-num blue">'   + e.follow + '</span><span class="emp-lbl">跟进中</span></div>' +
+          '<div class="emp-item"><span class="emp-num red">'    + e.lost   + '</span><span class="emp-lbl">已流失</span></div>' +
+          '</div></div>';
+      });
+      if (empList.length === 0) eHtml += '<div class="empty">暂无员工数据</div>';
+      document.getElementById('ap-employee').innerHTML = eHtml;
     });
 
-  // 拉取月度目标
+  // 月度目标
   db.collection('goals')
     .where('type','==','monthly')
     .where('month','==',month)
-    .get().then(snap => {
-      let totalSales = 0;
-      const goals = snap.docs.map(d => {
-        const g = d.data();
-        totalSales += g.salesDone || 0;
-        const pct = g.salesTarget > 0
-          ? Math.min(Math.round(g.salesDone/g.salesTarget*100),100) : 0;
-        return { ...g, pct };
-      });
-
-      // 更新总销售额
-      const sc = document.getElementById('adminSalesCard');
+    .get()
+    .then(function(snap) {
+      var totalSales = 0;
+      var gHtml = '<div class="sec-title">本月（' + month + '）目标完成情况</div>';
+      if (snap.empty) {
+        gHtml += '<div class="empty">暂无月度目标数据</div>';
+      } else {
+        snap.docs.forEach(function(d) {
+          var g   = d.data();
+          totalSales += g.salesDone || 0;
+          var pct = g.salesTarget > 0
+            ? Math.min(Math.round(g.salesDone/g.salesTarget*100),100) : 0;
+          gHtml +=
+            '<div class="card" style="margin-bottom:12px;">' +
+            '<div style="font-size:15px;font-weight:bold;color:#222;margin-bottom:10px;">👤 ' + (g.userName||'-') + '</div>' +
+            '<div class="goal-cols">' +
+            '<div class="goal-col"><span class="gcnum">¥' + (g.salesTarget||0) + '</span><span class="gclbl">目标额</span></div>' +
+            '<div class="goal-col"><span class="gcnum green">¥' + (g.salesDone||0) + '</span><span class="gclbl">已完成</span></div>' +
+            '<div class="goal-col"><span class="gcnum red">¥' + (g.salesUnfinished||0) + '</span><span class="gclbl">未达成</span></div>' +
+            '</div>' +
+            '<div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+            '<div class="ppct">完成率：' + pct + '%</div>' +
+            '</div>';
+        });
+      }
+      document.getElementById('ap-goals').innerHTML = gHtml;
+      var sc = document.getElementById('salesCard');
       if (sc) sc.querySelector('.num').textContent = '¥' + totalSales;
+    });
+}
 
-      // 渲染目标完成情况
-      document.getElementById('adminGoals').innerHTML = `
-        <div class="section-title">本月（）目标完成情况</div>
-        
-              </div>
-              <div class="goal-cols">
-                <div class="goal-col">
-                  <span class="goal-col-num">¥</span>
-                  <span class="goal-col-lbl">目标额</span>
-                </div>
-                <div class="goal-col">
-                  <span class="goal-col-num green">¥</span>
-                  <span class="goal-col-lbl">已完成</span>
-                </div>
-                <div class="goal-col">
-                  <span class="goal-col-num red">¥</span>
-                  <span class="goal-col-lbl">未达成</span>
-                </div>
-              </div>
-              <div class="progress-bar">
-                <div class="progress-fill" style="width:%"></div>
-              </div>
-              <div class="progress-pct">完成率：%</div>
-            </div>`
-        ).join('')}`;
+// ============================================================
+// 消息发送面板
+// ============================================================
+var msgTarget = '全体';
+
+function renderMsgPanel() {
+  document.getElementById('ap-message').innerHTML =
+    '<div class="sec-title">📢 发送消息给员工</div>' +
+    '<div class="msg-send-box">' +
+    '<div class="msg-send-title">选择发送对象</div>' +
+    '<div class="msg-target">' +
+    '<div class="msg-target-btn active" id="mt-全体"   onclick="setMsgTarget(\'全体\')">全体员工</div>' +
+    '<div class="msg-target-btn"        id="mt-王凯"   onclick="setMsgTarget(\'王凯\')">王凯</div>' +
+    '<div class="msg-target-btn"        id="mt-朱红"   onclick="setMsgTarget(\'朱红\')">朱红</div>' +
+    '</div>' +
+    '<div class="form-group">' +
+    '<label class="form-label">消息内容</label>' +
+    '<textarea class="form-textarea" id="msgInput" placeholder="请输入要发送的消息..." style="min-height:100px;"></textarea>' +
+    '</div>' +
+    '<button class="btn btn-primary" onclick="sendMessage()">📤 立即发送</button>' +
+    '</div>' +
+    '<div class="sec-title" style="margin-top:16px;">历史消息记录</div>' +
+    '<div id="msgHistory"><div class="empty">加载中...</div></div>';
+  loadMsgHistory();
+}
+
+function setMsgTarget(target) {
+  msgTarget = target;
+  document.querySelectorAll('.msg-target-btn').forEach(function(btn){
+    btn.classList.remove('active');
+  });
+  document.getElementById('mt-' + target).classList.add('active');
+}
+
+function sendMessage() {
+  var content = document.getElementById('msgInput').value.trim();
+  if (!content) { alert('请输入消息内容'); return; }
+  db.collection('messages').add({
+    content:    content,
+    target:     msgTarget,
+    sender:     currentAccount.name,
+    createTime: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(function() {
+    showToast('消息发送成功');
+    document.getElementById('msgInput').value = '';
+    loadMsgHistory();
+  }).catch(function(err){ alert('发送失败：' + err.message); });
+}
+
+function loadMsgHistory() {
+  db.collection('messages')
+    .orderBy('createTime','desc')
+    .limit(20)
+    .get()
+    .then(function(snap) {
+      var el = document.getElementById('msgHistory');
+      if (!el) return;
+      if (snap.empty) {
+        el.innerHTML = '<div class="empty">暂无消息记录</div>';
+        return;
+      }
+      var html = '';
+      snap.docs.forEach(function(d) {
+        var m       = d.data();
+        var timeStr = m.createTime && m.createTime.toDate
+          ? m.createTime.toDate().toLocaleString('zh-CN')
+          : '';
+        html +=
+          '<div class="card" style="margin-bottom:10px;">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
+          '<span style="font-weight:bold;color:#1a73e8;">📢 发给：' + (m.target||'全体') + '</span>' +
+          '<span style="font-size:12px;color:#999;">' + timeStr + '</span>' +
+          '</div>' +
+          '<div style="font-size:15px;color:#333;margin-bottom:6px;">' + m.content + '</div>' +
+          '<div style="font-size:12px;color:#aaa;">发送人：' + (m.sender||'管理员') + '</div>' +
+          '</div>';
+      });
+      el.innerHTML = html;
     });
 }
 
@@ -850,16 +1023,13 @@ function loadAdminData() {
 // 工具函数
 // ============================================================
 function showToast(msg) {
-  const toast = document.createElement('div');
+  var old = document.querySelector('.toast');
+  if (old) old.remove();
+  var toast       = document.createElement('div');
+  toast.className   = 'toast';
   toast.textContent = msg;
-  toast.style.cssText = `
-    position:fixed; bottom:100px; left:50%;
-    transform:translateX(-50%);
-    background:rgba(0,0,0,0.7); color:#fff;
-    padding:10px 24px; border-radius:20px;
-    font-size:14px; z-index:9999;`;
   document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 2000);
+  setTimeout(function(){ if(toast.parentNode) toast.remove(); }, 2000);
 }
 </script>
 
